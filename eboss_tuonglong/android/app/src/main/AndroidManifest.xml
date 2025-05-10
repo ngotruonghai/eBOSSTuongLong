@@ -6,7 +6,7 @@
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher">
         <activity
-            android:name="com.eboss.tuonglong.MainActivity"
+            android:name="com.eboss.tuonglongs.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:taskAffinity=""

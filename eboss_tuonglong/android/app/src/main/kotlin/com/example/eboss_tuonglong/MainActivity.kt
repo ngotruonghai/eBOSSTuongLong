@@ -1,4 +1,4 @@
-package com.eboss.tuonglong
+package com.eboss.tuonglongs
 
 import io.flutter.embedding.android.FlutterActivity
 
