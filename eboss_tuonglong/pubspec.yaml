@@ -25,7 +25,7 @@ dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/lego_eboss.png" # ← đường dẫn đến icon của bạn
+  image_path: "assets/logoiconapp.png" # ← đường dẫn đến icon của bạn
 
 dev_dependencies:
   flutter_test:
