@@ -41,9 +41,16 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIDeviceFamily</key>
+	<array>
+		<integer>1</integer> <!-- iPhone -->
+		<integer>2</integer> <!-- iPad -->
+	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>NSAllowsArbitraryLoads</key>
 	<true/>
 </dict>
 </plist>

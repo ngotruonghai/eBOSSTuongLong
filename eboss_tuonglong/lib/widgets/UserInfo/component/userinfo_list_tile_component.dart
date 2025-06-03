@@ -123,7 +123,7 @@ class _UserinfoListTileComponent extends State<UserinfoListTileComponent> with S
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Hello",
+                            "",
                             style: TextStyle(
                               color: Colors.black
                             ),
