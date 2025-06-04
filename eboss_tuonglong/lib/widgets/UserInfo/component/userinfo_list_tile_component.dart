@@ -90,14 +90,14 @@ class _UserinfoListTileComponent extends State<UserinfoListTileComponent> with S
               ),
             ],
           ),
-          trailing: Icon(
-            !isExpanded ? Icons.keyboard_arrow_right : Icons.keyboard_arrow_down,
-          ),
-          onTap: () {
-            setState(() {
-              isExpanded = !isExpanded;
-            });
-          },
+          // trailing: Icon(
+          //   !isExpanded ? Icons.keyboard_arrow_right : Icons.keyboard_arrow_down,
+          // ),
+          // onTap: () {
+          //   setState(() {
+          //     isExpanded = !isExpanded;
+          //   });
+          // },
         ),
         if (isExpanded) 
           Row(
@@ -123,7 +123,7 @@ class _UserinfoListTileComponent extends State<UserinfoListTileComponent> with S
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "",
+                            "dsd",
                             style: TextStyle(
                               color: Colors.black
                             ),

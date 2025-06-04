@@ -167,9 +167,9 @@ class _UserInfoScreen extends State<UserInfoScreen> {
               screenWidth: screenWidth, 
               icon: "assets/profile.png", 
               text: "Ngôn ngữ", 
-              subText: "", 
+              subText: "Tiếng việt", 
               data: ["123"],
-              containSubtext: false
+              containSubtext: true
             ),
 
             SizedBox(height: screenWidth * 0.04),
