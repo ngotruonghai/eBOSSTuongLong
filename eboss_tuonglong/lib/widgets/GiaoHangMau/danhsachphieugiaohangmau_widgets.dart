@@ -21,6 +21,8 @@ class _DanhSachPhieuGiaoHangMauWidgetsState
   DateTime _selectFormDate = DateTime.now();
   DateTime _selectToDate = DateTime.now();
   final TextEditingController _masanpham = TextEditingController();
+  final TextEditingController _tenkhachhang = TextEditingController();
+  final TextEditingController _nhanvienkinhoanh = TextEditingController();
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
   Future<int> API_LoadDanhSachPhieuMuaHang(BuildContext context) async {
@@ -29,6 +31,8 @@ class _DanhSachPhieuGiaoHangMauWidgetsState
       "denNgay": _dateFormat.format(_selectToDate),
       "type": widget.Type,
       "deliveryID": _masanpham.text,
+      "tenKhachHang": _tenkhachhang.text,
+      "nhanVienKinhDoanh": _nhanvienkinhoanh.text,
     };
 
     final response = await NetWorkRequest.PostDefault(
@@ -137,33 +141,33 @@ void initState() {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            item.maPhieu.toString(),
+                                            item.maPhieu.toString().trim(),
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16,
                                             ),
                                           ),
                                         ),
-                                        if (item.statusID == "02")
-                                          const Icon(
-                                            Icons.restart_alt_outlined,
-                                            color: Colors.blue,
-                                          ),
-                                        if (item.statusID == "01")
-                                          const Icon(
-                                            Icons.star_border_purple500,
-                                            color: Colors.blue,
-                                          ),
-                                        if (item.statusID == "03")
-                                          const Icon(
-                                            Icons.check_outlined,
-                                            color: Colors.green,
-                                          ),
-                                        if (item.statusID == "99")
-                                          const Icon(
-                                            Icons.highlight_off,
-                                            color: Colors.red,
-                                          ),
+                                        // if (item.statusID == "02")
+                                        //   const Icon(
+                                        //     Icons.restart_alt_outlined,
+                                        //     color: Colors.blue,
+                                        //   ),
+                                        // if (item.statusID == "01")
+                                        //   const Icon(
+                                        //     Icons.star_border_purple500,
+                                        //     color: Colors.blue,
+                                        //   ),
+                                        // if (item.statusID == "03")
+                                        //   const Icon(
+                                        //     Icons.check_outlined,
+                                        //     color: Colors.green,
+                                        //   ),
+                                        // if (item.statusID == "99")
+                                        //   const Icon(
+                                        //     Icons.highlight_off,
+                                        //     color: Colors.red,
+                                        //   ),
                                       ],
                                     ),
                                     const SizedBox(height: 8),
@@ -189,28 +193,28 @@ void initState() {
                                     const SizedBox(height: 4),
                                     Text(
                                       item.loaiPhieu.toString(),
-                                      style: TextStyle(
-                                        color:
-                                            item.statusID == "03"
-                                                ? Colors.green
-                                                : item.statusID == "99"
-                                                ? Colors.red
-                                                : Colors.blue,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                      // style: TextStyle(
+                                      //   color:
+                                      //       item.statusID == "03"
+                                      //           ? Colors.green
+                                      //           : item.statusID == "99"
+                                      //           ? Colors.red
+                                      //           : Colors.blue,
+                                      //   fontWeight: FontWeight.bold,
+                                      // ),
                                     ),
                                     const SizedBox(height: 4),
-                                    if (item.stattustSoNgayDaQua == 3)
+                                    if (item.stattustSoNgayDaQua == 2)
                                       Container(
                                         decoration: BoxDecoration(
-                                          color: Colors.yellowAccent,
+                                          color: Colors.green,
                                           borderRadius: BorderRadius.circular(
                                             10,
                                           ),
                                         ),
                                         height: 5,
                                       ),
-                                    if (item.stattustSoNgayDaQua == 2)
+                                    if (item.stattustSoNgayDaQua == 1)
                                       Container(
                                         decoration: BoxDecoration(
                                           color: Colors.red,
@@ -239,7 +243,19 @@ void initState() {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Mã số sản phẩm"),
+              const Text("Tên khách hàng"),
+              TextField(
+                decoration: const InputDecoration(border: OutlineInputBorder()),
+                controller: _tenkhachhang,
+              ),
+              SizedBox(height: 20),
+              const Text("Nhân viên kinh doanh"),
+              TextField(
+                decoration: const InputDecoration(border: OutlineInputBorder()),
+                controller: _nhanvienkinhoanh,
+              ),
+               SizedBox(height: 20),
+              const Text("Số phiếu giao"),
               TextField(
                 decoration: const InputDecoration(border: OutlineInputBorder()),
                 controller: _masanpham,

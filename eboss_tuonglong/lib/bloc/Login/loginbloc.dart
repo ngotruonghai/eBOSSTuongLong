@@ -17,47 +17,101 @@ class LoginBloc extends Bloc<LoginEvent, Loginstate> {
   }
 
   Future<void> _onLoadPage(
-      LoginInitialEvent event, Emitter<Loginstate> emit) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    LoginInitialEvent event,
+    Emitter<Loginstate> emit,
+  ) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
     await SharedPreferencesService.init();
-    prefs.clear();
-    if (prefs.getString(KeyServices.Token) == null) {
+    if (prefs.getString(KeyServices.Token) == null ||
+        prefs.getString(KeyServices.Token) == "") {
       emit(Loginstate.LoginInnitial);
     } else {
-      emit(Loginstate.Success);
+      // check token
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? refreshToken = prefs.getString(KeyServices.Token);
+      if (refreshToken == null || refreshToken.isEmpty) {
+        emit(Loginstate.LoginInnitial);
+        return;
+      }
+      LoadingOverlay.show(event.context);
+
+      Map<String, dynamic> request = {
+        "token": prefs.get(KeyServices.Token),
+        "refestToken": prefs.get(KeyServices.RefestToken),
+        "mobileCode": "ebossMobile",
+        "ip": "NULL",
+      };
+      final response = await NetWorkRequest.PostDefault(
+        "/api/User/RefestTokenNew",
+        request,
+        event.context,
+      );
+      final reponse = LoginModel.fromJson(response);
+
+      if (reponse.data?.allowAccess == true) {
+        prefs.setString(KeyServices.Token, reponse.data!.token.toString());
+        prefs.setString(
+          KeyServices.RefestToken,
+          reponse.data!.refreshToken.toString(),
+        );
+        emit(Loginstate.Success);
+        LoadingOverlay.hide(event.context);
+      } else {
+        emit(Loginstate.LoginInnitial);
+        LoadingOverlay.hide(event.context);
+      }
+    }
+    } catch (e) {
+      emit(Loginstate.LoginInnitial);
+        LoadingOverlay.hide(event.context);
     }
   }
 
   Future<void> _onLoginClick(
-      LoginClickEvent event, Emitter<Loginstate> emit) async {
+    LoginClickEvent event,
+    Emitter<Loginstate> emit,
+  ) async {
     try {
       if (event.username == "" || event.password == "") {
-        SnackbarError.showSnackbar_Waiting(event.context,
-            message: "Vui lòng điền đầy đủ thông tin!");
+        SnackbarError.showSnackbar_Waiting(
+          event.context,
+          message: "Vui lòng điền đầy đủ thông tin!",
+        );
       } else {
         LoadingOverlay.show(event.context);
         /* Cal API */
         Map<String, dynamic> request = {
           "userName": event.username,
-          "password": event.password
+          "password": event.password,
         };
         final response = await NetWorkRequest.PostDefault(
-            "/api/User/LoginUser", request, event.context);
+          "/api/User/LoginUser",
+          request,
+          event.context,
+        );
         final reponse = LoginModel.fromJson(response);
 
         if (reponse.code == 200) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await SharedPreferencesService.init();
+          prefs.setString(KeyServices.Token, reponse.data!.token.toString());
           prefs.setString(
-              KeyServices.Token, reponse.data!.token.toString());
+            KeyServices.UserName,
+            reponse.data!.userName.toString(),
+          );
           prefs.setString(
-              KeyServices.UserName, reponse.data!.userName.toString());
+            KeyServices.EmployeeAID,
+            reponse.data!.employeeAID.toString(),
+          );
           prefs.setString(
-              KeyServices.EmployeeAID, reponse.data!.employeeAID.toString());
+            KeyServices.RefestToken,
+            reponse.data!.refreshToken.toString(),
+          );
 
           emit(Loginstate.Success);
         }
-        LoadingOverlay.hide(event.context);        
+        LoadingOverlay.hide(event.context);
       }
     } catch (e) {
       LoadingOverlay.hide(event.context);

@@ -12,7 +12,7 @@ class LoginProvider extends StatelessWidget {
     return (BlocProvider<LoginBloc>(
       create: (BuildContext context) {
         // Khởi tạo LoginBloc và gửi sự kiện InitLoginEvent
-        final loginBloc = LoginBloc()..add(LoginInitialEvent());
+        final loginBloc = LoginBloc()..add(LoginInitialEvent(context));
         return loginBloc;
       },
       child: child,

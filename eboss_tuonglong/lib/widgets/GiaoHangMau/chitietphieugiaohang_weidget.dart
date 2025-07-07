@@ -5,7 +5,6 @@ import 'package:eboss_tuonglong/model/PhieuMuaHang/chitietphieumuahangmodel.dart
 import 'package:eboss_tuonglong/model/PhieuMuaHang/danhsachchitietphieugiaohangmodel.dart'
     as modeldanhsachchitietphieugiaohangs;
 import 'package:eboss_tuonglong/services/NetWorkRequest.dart';
-import 'package:eboss_tuonglong/widgets/GiaoHangMau/type.dart';
 import 'package:flutter/material.dart';
 
 class ChiTietPhieuGiaoHangWidget extends StatefulWidget {

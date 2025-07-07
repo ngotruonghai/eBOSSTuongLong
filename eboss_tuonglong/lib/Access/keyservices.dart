@@ -19,4 +19,7 @@ class KeyServices{
   static String get EmployeeAID{
     return "EmployeeAID";
   }
+   static String get RefreshToken{
+    return "RefreshToken";
+  }
 }

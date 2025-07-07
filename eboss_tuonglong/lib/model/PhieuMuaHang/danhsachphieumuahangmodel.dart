@@ -50,6 +50,7 @@ class Data {
   String? responseDate;
   int? stattustSoNgayDaQua;
   String? YKienKhachHang;
+  String? YKienLanhDao;
 
   Data(
       {this.deliveryAID,
@@ -66,7 +67,7 @@ class Data {
       this.soNgayQuahan,
       this.responseDate,
       this.stattustSoNgayDaQua,
-      this.YKienKhachHang});
+      this.YKienLanhDao});
 
   Data.fromJson(Map<String, dynamic> json) {
     deliveryAID = json['DeliveryAID'];
@@ -84,6 +85,7 @@ class Data {
     responseDate = json['ResponseDate'];
     stattustSoNgayDaQua = json['StattustSoNgayDaQua'];
     YKienKhachHang = json['YKienKhachHang'];
+    YKienLanhDao = json['YKienLanhDao'];
   }
 
   Map<String, dynamic> toJson() {
@@ -103,6 +105,7 @@ class Data {
     data['ResponseDate'] = this.responseDate;
     data['StattustSoNgayDaQua'] = this.stattustSoNgayDaQua;
     data['YKienKhachHang'] = this.YKienKhachHang; 
+    data['YKienLanhDao'] = this.YKienLanhDao; 
     return data;
   }
 }

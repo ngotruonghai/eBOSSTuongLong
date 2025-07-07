@@ -40,14 +40,13 @@ class _AppBarBootomState extends State<AppBarBootom> {
             ),
             label: "Trang chủ",
           ),
-          // BottomNavigationBarItem(
-          //   icon: Image.asset(
-          //     "assets/productivity.png",
-          //     width: 25, // bạn có thể điều chỉnh kích thước icon
-          //     height: 25,
-          //   ),
-          //   label: "Nhiệm vụ",
-          // ),
+          BottomNavigationBarItem(
+             icon: Icon(
+              Icons.window_rounded,
+              size: 25, // Kích thước icon
+            ),
+            label: "Ứng dụng",
+          ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person,
