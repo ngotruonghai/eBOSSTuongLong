@@ -2,7 +2,7 @@ name: eboss_tuonglong
 description: "A new Flutter project."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.8+8
+version: 1.1.0+1
 
 environment:
   sdk: ^3.7.2
@@ -28,6 +28,8 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/logoiconapp.png" # ← đường dẫn đến icon của bạn
+  remove_alpha_ios: true # Thêm dòng này để loại bỏ alpha trên iOS
+
 
 dev_dependencies:
   flutter_test:
