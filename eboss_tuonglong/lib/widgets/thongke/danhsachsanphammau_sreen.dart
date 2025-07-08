@@ -125,6 +125,14 @@ class _DanhSachSanPhamMauSreenStateState extends State<DanhSachSanPhamMauSreen>
                             label: Text('Ngày KH \nphản hồi'),
                             size: ColumnSize.S,
                           ),
+                            const DataColumn2(
+                            label: Text('Ý kiến KH'),
+                            size: ColumnSize.S,
+                          ),
+                            const DataColumn2(
+                            label: Text('Ý kiến \nlãnh đạo'),
+                            size: ColumnSize.S,
+                          ),
                         
                         ],
                          rows:
@@ -222,7 +230,26 @@ class _DanhSachSanPhamMauSreenStateState extends State<DanhSachSanPhamMauSreen>
                                       ),
                                     ),
                                   ),
-                                  
+                                  DataCell(
+                                    Text(
+                                      item.yKkienDanhGia?.toString() ?? '',
+                                      style: TextStyle(
+                                        color: getColorByStatus(
+                                          item.isFinish,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Text(
+                                      item.yKienKhachHang?.toString()??"",
+                                      style: TextStyle(
+                                        color: getColorByStatus(
+                                          item.isFinish,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               );
                             }).toList(),
