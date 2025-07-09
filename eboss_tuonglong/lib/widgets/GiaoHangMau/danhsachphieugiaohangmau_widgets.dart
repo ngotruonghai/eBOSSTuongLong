@@ -78,12 +78,14 @@ class _DanhSachPhieuGiaoHangMauWidgetsState
     );
     if (picked != null) onDateSelected(picked);
   }
-@override
-void initState() {
-  super.initState();
-  _selectFormDate = DateTime(DateTime.now().year, DateTime.now().month, 1);
-  _selectToDate = DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
-}
+
+  @override
+  void initState() {
+    super.initState();
+    _selectFormDate = DateTime(DateTime.now().year, DateTime.now().month, 1);
+    _selectToDate = DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,123 +115,136 @@ void initState() {
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     children:
-                        lsDanhSachPhieuMuaHang.map((item) {
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) => ChiTietPhieuGiaoHangWidget(
-                                        id: item.deliveryAID.toString(),
-                                        deliveryAID: item.maPhieu.toString(),
-                                      ),
+                        lsDanhSachPhieuMuaHang.isEmpty
+                            ? [
+                              const Center(
+                                child: Text(
+                                  "Không có dữ liệu",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey,
+                                  ),
                                 ),
-                              );
-                            },
-                            child: Card(
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
+                            ]
+                            : lsDanhSachPhieuMuaHang.map((item) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) =>
+                                              ChiTietPhieuGiaoHangWidget(
+                                                id: item.deliveryAID.toString(),
+                                                deliveryAID:
+                                                    item.maPhieu.toString(),
+                                              ),
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Expanded(
-                                          child: Text(
-                                            item.maPhieu.toString().trim(),
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                item.maPhieu.toString().trim(),
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            // if (item.statusID == "02")
+                                            //   const Icon(
+                                            //     Icons.restart_alt_outlined,
+                                            //     color: Colors.blue,
+                                            //   ),
+                                            // if (item.statusID == "01")
+                                            //   const Icon(
+                                            //     Icons.star_border_purple500,
+                                            //     color: Colors.blue,
+                                            //   ),
+                                            // if (item.statusID == "03")
+                                            //   const Icon(
+                                            //     Icons.check_outlined,
+                                            //     color: Colors.green,
+                                            //   ),
+                                            // if (item.statusID == "99")
+                                            //   const Icon(
+                                            //     Icons.highlight_off,
+                                            //     color: Colors.red,
+                                            //   ),
+                                          ],
                                         ),
-                                        // if (item.statusID == "02")
-                                        //   const Icon(
-                                        //     Icons.restart_alt_outlined,
-                                        //     color: Colors.blue,
-                                        //   ),
-                                        // if (item.statusID == "01")
-                                        //   const Icon(
-                                        //     Icons.star_border_purple500,
-                                        //     color: Colors.blue,
-                                        //   ),
-                                        // if (item.statusID == "03")
-                                        //   const Icon(
-                                        //     Icons.check_outlined,
-                                        //     color: Colors.green,
-                                        //   ),
-                                        // if (item.statusID == "99")
-                                        //   const Icon(
-                                        //     Icons.highlight_off,
-                                        //     color: Colors.red,
-                                        //   ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          "Ngày ghi nhận: ${item.recordDate}",
+                                          style: const TextStyle(fontSize: 13),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          "Dự kiến trả lời: ${item.responseDate ?? "_"}",
+                                          style: const TextStyle(fontSize: 13),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          "Nhân viên kinh doanh: ${item.nhanVienKinhDoanh ?? "_"}",
+                                          style: const TextStyle(fontSize: 13),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          "Ý kiến khách hàng: ${item.YKienKhachHang ?? "_"}",
+                                          style: const TextStyle(fontSize: 13),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          item.loaiPhieu.toString(),
+                                          // style: TextStyle(
+                                          //   color:
+                                          //       item.statusID == "03"
+                                          //           ? Colors.green
+                                          //           : item.statusID == "99"
+                                          //           ? Colors.red
+                                          //           : Colors.blue,
+                                          //   fontWeight: FontWeight.bold,
+                                          // ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        if (item.stattustSoNgayDaQua == 2)
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.green,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            height: 5,
+                                          ),
+                                        if (item.stattustSoNgayDaQua == 1)
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            height: 5,
+                                          ),
                                       ],
                                     ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      "Ngày ghi nhận: ${item.recordDate}",
-                                      style: const TextStyle(fontSize: 13),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      "Dự kiến trả lời: ${item.responseDate ?? "_"}",
-                                      style: const TextStyle(fontSize: 13),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      "Nhân viên kinh doanh: ${item.nhanVienKinhDoanh ?? "_"}",
-                                      style: const TextStyle(fontSize: 13),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      "Ý kiến khách hàng: ${item.YKienKhachHang ?? "_"}",
-                                      style: const TextStyle(fontSize: 13),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      item.loaiPhieu.toString(),
-                                      // style: TextStyle(
-                                      //   color:
-                                      //       item.statusID == "03"
-                                      //           ? Colors.green
-                                      //           : item.statusID == "99"
-                                      //           ? Colors.red
-                                      //           : Colors.blue,
-                                      //   fontWeight: FontWeight.bold,
-                                      // ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    if (item.stattustSoNgayDaQua == 2)
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.green,
-                                          borderRadius: BorderRadius.circular(
-                                            10,
-                                          ),
-                                        ),
-                                        height: 5,
-                                      ),
-                                    if (item.stattustSoNgayDaQua == 1)
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius: BorderRadius.circular(
-                                            10,
-                                          ),
-                                        ),
-                                        height: 5,
-                                      ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
+                              );
+                            }).toList(),
                   ),
                 ),
               );
@@ -254,7 +269,7 @@ void initState() {
                 decoration: const InputDecoration(border: OutlineInputBorder()),
                 controller: _nhanvienkinhoanh,
               ),
-               SizedBox(height: 20),
+              SizedBox(height: 20),
               const Text("Số phiếu giao"),
               TextField(
                 decoration: const InputDecoration(border: OutlineInputBorder()),
