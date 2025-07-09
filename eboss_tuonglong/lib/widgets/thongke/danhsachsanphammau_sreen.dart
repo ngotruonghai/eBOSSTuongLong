@@ -79,7 +79,7 @@ class _DanhSachSanPhamMauSreenStateState extends State<DanhSachSanPhamMauSreen>
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 24),
                     child: SizedBox(
-                      width: 1150,
+                      width: 1700,
                       child: DataTable2(
                         showCheckboxColumn: false,
                         fixedTopRows: 1,
@@ -99,7 +99,7 @@ class _DanhSachSanPhamMauSreenStateState extends State<DanhSachSanPhamMauSreen>
                           ),
                           const DataColumn2(
                             label: Text('Phiếu yêu cầu'),
-                            size: ColumnSize.S,
+                            size: ColumnSize.L,
                           ),
                           const DataColumn2(
                             label: Text('Ngày ghi nhận'),
@@ -115,7 +115,7 @@ class _DanhSachSanPhamMauSreenStateState extends State<DanhSachSanPhamMauSreen>
                           ),
                           const DataColumn2(
                             label: Text('NV kinh doanh'),
-                            size: ColumnSize.S,
+                            size: ColumnSize.L,
                           ),
                             const DataColumn2(
                             label: Text('Ngày \ndự kiến \ncó hàng'),
@@ -127,11 +127,11 @@ class _DanhSachSanPhamMauSreenStateState extends State<DanhSachSanPhamMauSreen>
                           ),
                             const DataColumn2(
                             label: Text('Ý kiến KH'),
-                            size: ColumnSize.S,
+                            size: ColumnSize.L,
                           ),
                             const DataColumn2(
                             label: Text('Ý kiến \nlãnh đạo'),
-                            size: ColumnSize.S,
+                            size: ColumnSize.L,
                           ),
                         
                         ],

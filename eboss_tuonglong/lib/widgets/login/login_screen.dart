@@ -3,6 +3,7 @@ import 'package:eboss_tuonglong/bloc/Login/LoginEvent.dart';
 import 'package:eboss_tuonglong/bloc/Login/loginprovider.dart';
 import 'package:eboss_tuonglong/bloc/Login/loginstate.dart';
 import 'package:eboss_tuonglong/widgets/home/home_screen.dart';
+import 'package:eboss_tuonglong/widgets/login/dangkyuser_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,6 +36,8 @@ class _LoginScreenState extends State<LoginScreen> {
               return Home_Screen();
             } else if (state == Loginstate.Success) {
               return Home_Screen();
+            } else if (state == Loginstate.CreateUser) {
+              return DangKyUserSreecn();
             } else {
               return _LoginWidget(context);
             }

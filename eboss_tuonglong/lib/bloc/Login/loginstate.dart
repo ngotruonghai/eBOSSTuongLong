@@ -2,5 +2,6 @@
   LoginInnitial,
   LoginProgress,
   Success,
-  Failure
+  Failure,
+  CreateUser
 }

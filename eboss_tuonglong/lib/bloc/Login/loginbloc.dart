@@ -92,7 +92,7 @@ class LoginBloc extends Bloc<LoginEvent, Loginstate> {
         );
         final reponse = LoginModel.fromJson(response);
 
-        if (reponse.code == 200) {
+        if (reponse.data?.allowAccess == true) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await SharedPreferencesService.init();
           prefs.setString(KeyServices.Token, reponse.data!.token.toString());
@@ -110,6 +110,29 @@ class LoginBloc extends Bloc<LoginEvent, Loginstate> {
           );
 
           emit(Loginstate.Success);
+        }
+        else if(reponse.data?.allowAccess == false){
+
+SharedPreferences prefs = await SharedPreferences.getInstance();
+          await SharedPreferencesService.init();
+          prefs.setString(KeyServices.Token, reponse.data!.token.toString());
+          prefs.setString(
+            KeyServices.UserName,
+            reponse.data!.userName.toString(),
+          );
+          prefs.setString(
+            KeyServices.EmployeeAID,
+            reponse.data!.employeeAID.toString(),
+          );
+          prefs.setString(
+            KeyServices.RefestToken,
+            reponse.data!.refreshToken.toString(),
+          );
+
+          emit(Loginstate.CreateUser);
+        }
+        else{
+          emit(Loginstate.LoginInnitial);
         }
         LoadingOverlay.hide(event.context);
       }
