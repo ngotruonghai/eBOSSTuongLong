@@ -183,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: EdgeInsets.only(top: 5),
                   child: Center(
                     child: Text(
-                      "eBOSS V1.0.7",
+                      "eBOSS V1.1.0",
                       style: TextStyle(
                         color: Colors.grey,
                         fontFamily: "Roboto",

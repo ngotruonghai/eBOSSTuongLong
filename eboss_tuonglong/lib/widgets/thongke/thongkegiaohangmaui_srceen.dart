@@ -113,7 +113,7 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                             size: ColumnSize.S,
                           ),
                            const DataColumn2(
-                            label: Text('Ngày dự iến \ntrả lời'),
+                            label: Text('Ngày dự kiến \ntrả lời'),
                             size: ColumnSize.S,
                           ),
                           const DataColumn2(
