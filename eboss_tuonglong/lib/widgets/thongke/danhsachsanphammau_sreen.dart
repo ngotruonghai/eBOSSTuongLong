@@ -79,7 +79,7 @@ class _DanhSachSanPhamMauSreenStateState extends State<DanhSachSanPhamMauSreen>
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 24),
                     child: SizedBox(
-                      width: 1700,
+                      width: 1800,
                       child: DataTable2(
                         showCheckboxColumn: false,
                         fixedTopRows: 1,
@@ -102,16 +102,16 @@ class _DanhSachSanPhamMauSreenStateState extends State<DanhSachSanPhamMauSreen>
                             size: ColumnSize.L,
                           ),
                           const DataColumn2(
-                            label: Text('Ngày ghi nhận'),
-                            size: ColumnSize.S,
+                            label: Text('Ngày \nghi nhận'),
+                            size: ColumnSize.L,
                           ),
                           const DataColumn2(
                             label: Text('Tên \nkhách hàng'),
-                            size: ColumnSize.S,
+                            size: ColumnSize.L,
                           ),
                           const DataColumn2(
                             label: Text('Mã hàng'),
-                            size: ColumnSize.S,
+                            size: ColumnSize.L,
                           ),
                           const DataColumn2(
                             label: Text('NV kinh doanh'),
@@ -119,11 +119,11 @@ class _DanhSachSanPhamMauSreenStateState extends State<DanhSachSanPhamMauSreen>
                           ),
                             const DataColumn2(
                             label: Text('Ngày \ndự kiến \ncó hàng'),
-                            size: ColumnSize.S,
+                            size: ColumnSize.L,
                           ),
                           const DataColumn2(
                             label: Text('Ngày KH \nphản hồi'),
-                            size: ColumnSize.S,
+                            size: ColumnSize.L,
                           ),
                             const DataColumn2(
                             label: Text('Ý kiến KH'),
