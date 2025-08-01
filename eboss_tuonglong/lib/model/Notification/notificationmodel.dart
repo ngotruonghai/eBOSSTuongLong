@@ -40,7 +40,10 @@ class Data {
   String? tieuDe;
   String? noiDung;
   String? createDate;
+  String? NhanVienKinhDoanh;
   String? nameVietnamese;
+  String? TenCongTy;
+  String? MaPhieuGiaoHang;
 
   Data(
       {this.iD,
@@ -48,7 +51,10 @@ class Data {
       this.tieuDe,
       this.noiDung,
       this.createDate,
-      this.nameVietnamese});
+      this.NhanVienKinhDoanh,
+      this.nameVietnamese,
+      this.TenCongTy,
+      this.MaPhieuGiaoHang});
 
   Data.fromJson(Map<String, dynamic> json) {
     iD = json['ID'];
@@ -57,6 +63,9 @@ class Data {
     noiDung = json['NoiDung'];
     createDate = json['CreateDate'];
     nameVietnamese = json['NameVietnamese'];
+    NhanVienKinhDoanh = json['NhanVienKinhDoanh'] ?? "";
+    TenCongTy = json['TenCongTy'] ?? "";
+    MaPhieuGiaoHang = json['MaPhieuGiaoHang'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -67,6 +76,9 @@ class Data {
     data['NoiDung'] = this.noiDung;
     data['CreateDate'] = this.createDate;
     data['NameVietnamese'] = this.nameVietnamese;
+    data['NhanVienKinhDoanh'] = this.NhanVienKinhDoanh;
+    data['TenCongTy'] = this.TenCongTy;
+    data['MaPhieuGiaoHang'] = this.MaPhieuGiaoHang;
     return data;
   }
 }

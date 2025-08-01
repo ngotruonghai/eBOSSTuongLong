@@ -1,3 +1,5 @@
+import 'package:eboss_tuonglong/Access/mobilelanguageprovider.dart';
+import 'package:eboss_tuonglong/common/LanguageText.dart';
 import 'package:eboss_tuonglong/common/loadingoverlay.dart';
 import 'package:eboss_tuonglong/common/snackbarerror.dart';
 import 'package:eboss_tuonglong/model/PhieuMuaHang/chitietphieumuahangmodel.dart'
@@ -10,11 +12,19 @@ import 'package:flutter/material.dart';
 class ChiTietPhieuGiaoHangWidget extends StatefulWidget {
   final String id;
   final String deliveryAID;
+  final String? salesManName;
+  final String? maPhieu;
+  final String? deliveryID;
+  final String? customerName;
 
   const ChiTietPhieuGiaoHangWidget({
     Key? key,
     required this.id,
     required this.deliveryAID,
+    required this.salesManName,
+    required this.maPhieu,
+    this.deliveryID,
+    this.customerName,
   }) : super(key: key);
 
   @override
@@ -78,6 +88,10 @@ class _ChiTietPhieuGiaoHangWidgetState
       "yienLanhDao": _yKienLanhDaoController.text,
       "ghiChu": _ghiChuController.text,
       "deliveryAID": widget.id,
+      "salesManName": widget.salesManName?.trim() ?? "",
+      "maPhieu" : widget.maPhieu?.trim() ?? "",
+      "deliveryID": widget.deliveryID?.trim() ?? "",
+      "customerName": widget.customerName?.trim() ?? "",
     };
     final response = await NetWorkRequest.PutDefault(
       "/api/PhieuGiaoHang/CapNhatYKien",
@@ -123,11 +137,12 @@ class _ChiTietPhieuGiaoHangWidgetState
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF1F615C),
-          title: Text("Chi tiết phiếu giao hàng"),
+          title: LanguageText(nameId: "chitietphieugiaohang", defaultValue: "Chi tiết phiếu giao hàng"),
           titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
           bottom: TabBar(
             indicatorColor: Colors.white,
-            tabs: [Tab(text: "Thông tin chung"), Tab(text: "Chi tiết")],
+            tabs: [Tab(text: LoadAppMobileLanguage.GetStringLanguage("thongtinchung", NameDefault: "Thông tin chung")),
+             Tab(text: LoadAppMobileLanguage.GetStringLanguage("chitiet", NameDefault: "Chi tiết"))],
           ),
         ),
         body: RefreshIndicator(
@@ -158,45 +173,52 @@ class _ChiTietPhieuGiaoHangWidgetState
       child: Form(
         key: _formKey,
         child: ListView(
-          children: [
-            _buildReadOnlyTextField("Số phiếu giao", _soPhieuController, true),
-            _buildReadOnlyTextField("Loại phiếu", _loaiPhieuController, true),
+          children: [ 
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: _buildReadOnlyTextField(LoadAppMobileLanguage.GetStringLanguage("sophieu", NameDefault: "Số phiếu giao"), _soPhieuController, true),
+            ),                       
+            _buildReadOnlyTextField(LoadAppMobileLanguage.GetStringLanguage("loaiphieu", NameDefault: "Loại phiếu"), _loaiPhieuController, true),
             _buildReadOnlyTextField(
-              "Ngày ghi nhận",
+              LoadAppMobileLanguage.GetStringLanguage("13", NameDefault: "Ngày ghi nhận"),
               _ngayGhiNhanController,
               true,
             ),
             _buildReadOnlyTextField(
-              "Tên khách hàng",
+              LoadAppMobileLanguage.GetStringLanguage("tenkhachhang", NameDefault: "Tên khách hàng"),
               _tenKhachHangController,
               true,
             ),
             _buildReadOnlyTextField(
-              "Nhân viên xử lý",
+              LoadAppMobileLanguage.GetStringLanguage("nhanvienxuly", NameDefault: "Nhân viên xử lý"),
               _nhanVienXuLyController,
               true,
             ),
             _buildReadOnlyTextField(
-              "Nhân viên kinh doanh",
+              LoadAppMobileLanguage.GetStringLanguage("16", NameDefault: "Nhân viên kinh doanh"),
               _nhanVienKinhDoanhController,
               true,
             ),
             _buildReadOnlyTextField(
-              "Ngày dự kiến trả lời",
+              LoadAppMobileLanguage.GetStringLanguage("12", NameDefault: "Ngày dự kiến trả lời"),
               _ngayTraLoiController,
               true,
             ),
             _buildReadOnlyTextField(
-              "Ý kiến khách hàng",
+              LoadAppMobileLanguage.GetStringLanguage("36", NameDefault: "Ý kiến khách hàng"),
               _yKienKhachHangController,
               false,
             ),
             _buildReadOnlyTextField(
-              "Ý kiến ban lãnh đạo",
+              LoadAppMobileLanguage.GetStringLanguage("37", NameDefault: "Ý kiến ban lãnh đạo"),
               _yKienLanhDaoController,
               false,
             ),
-            _buildReadOnlyTextField("Ghi chú", _ghiChuController, false),
+            _buildReadOnlyTextField(
+              LoadAppMobileLanguage.GetStringLanguage("ghichu", NameDefault: "Ghi chú"),
+              _ghiChuController,
+              false,
+            ),
             ElevatedButton(
               onPressed: () async {
                 // Xử lý khi bấm nút
@@ -215,9 +237,11 @@ class _ChiTietPhieuGiaoHangWidgetState
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 11),
               ),
-              child: Text(
-                "Lưu thông tin",
-                style: TextStyle(color: Colors.white, fontSize: 16),
+              child: 
+              LanguageText(
+                nameId: "luuthongtin",
+                defaultValue: "Lưu thông tin",
+                style: TextStyle(color: Colors.white, fontSize: 16)
               ),
             ),
           ],
@@ -255,11 +279,11 @@ class _ChiTietPhieuGiaoHangWidgetState
     return TableRow(
       decoration: BoxDecoration(color: Colors.grey[300]),
       children: [
-        _buildTableCell("Mã hàng", isHeader: true),
-        _buildTableCell("Tên sản phẩm", isHeader: true),
-        _buildTableCell("Đơn vị tính", isHeader: true),
-        _buildTableCell("Số lượng", isHeader: true),
-        _buildTableCell("Ghi chú", isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("9", NameDefault: "Mã hàng"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("tensanpham", NameDefault: "Tên sản phẩm"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("donvitinh", NameDefault: "Đơn vị tính"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("soluong", NameDefault: "Số lượng"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("ghichu", NameDefault: "Ghi chú"), isHeader: true),
       ],
     );
   }

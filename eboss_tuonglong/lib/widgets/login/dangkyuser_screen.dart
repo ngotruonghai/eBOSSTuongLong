@@ -1,3 +1,5 @@
+import 'package:eboss_tuonglong/Access/mobilelanguageprovider.dart';
+import 'package:eboss_tuonglong/common/LanguageText.dart';
 import 'package:eboss_tuonglong/common/loadingoverlay.dart';
 import 'package:eboss_tuonglong/services/NetWorkRequest.dart';
 import 'package:eboss_tuonglong/widgets/login/login_screen.dart';
@@ -45,7 +47,7 @@ class _DangKyUserSreecnState extends State<DangKyUserSreecn> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Đăng ký mật khẩu"),
+        title: LanguageText(nameId: "dangkymatkhau", defaultValue: "Đăng ký mật khẩu"),
         backgroundColor: const Color(0xFF1F615C),
       ),
       body: Padding(
@@ -53,9 +55,9 @@ class _DangKyUserSreecnState extends State<DangKyUserSreecn> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _buildPasswordField("Mật khẩu", passwordController),
+            _buildPasswordField(LoadAppMobileLanguage.GetStringLanguage("nhapmatkhau", NameDefault: "Nhập mật khẩu"), passwordController),
             const SizedBox(height: 16),
-            _buildPasswordField("Nhập lại mật khẩu", confirmPasswordController),
+            _buildPasswordField(LoadAppMobileLanguage.GetStringLanguage("nhaplaimatkhau", NameDefault: "Nhập lại mật khẩu"), confirmPasswordController),
             const SizedBox(height: 32),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -69,7 +71,7 @@ class _DangKyUserSreecnState extends State<DangKyUserSreecn> {
               onPressed: () async {
                 await API_DangKyUser(context);
               },
-              child: const Text("Đăng ký"),
+              child: LanguageText(nameId: "dangky", defaultValue: "Đăng ký"),
             ),
           ],
         ),

@@ -1,3 +1,5 @@
+import 'package:eboss_tuonglong/Access/mobilelanguageprovider.dart';
+import 'package:eboss_tuonglong/common/LanguageText.dart';
 import 'package:eboss_tuonglong/services/NetWorkRequest.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,13 +26,13 @@ class ChiTietDanhsachSanphamSreecn extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: const Color(0xFF1F615C),
-            title: const Text("Chi tiết tiến độ sản xuất"),
+            title: LanguageText(nameId: "chitiettiendosanxuat", defaultValue: "Chi tiết tiến độ sản xuất"),
             titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
-            bottom: const TabBar(
+            bottom:  TabBar(
               indicatorColor: Colors.white,
               tabs: [
-                Tab(text: "Chi tiết giao hàng"),
-                Tab(text: "Chi tiết nhập kho"),
+                Tab(text: LoadAppMobileLanguage.GetStringLanguage("chitietgiaohang", NameDefault: "Chi tiết giao hàng")),
+                Tab(text: LoadAppMobileLanguage.GetStringLanguage("chitietnhapkho", NameDefault: "Chi tiết nhập kho")),
               ],
             ),
           ),
@@ -75,16 +77,16 @@ class ChiTietDanhsachSanphamSreecn extends StatelessWidget {
             TableRow(
               decoration: BoxDecoration(color: Colors.grey[300]),
               children: [
-                _buildTableCell("Số phiếu", isHeader: true),
-                _buildTableCell("Ngày ghi nhận", isHeader: true),
-                _buildTableCell("Mã sản phẩm", isHeader: true),
-                _buildTableCell("Tên sản phẩm", isHeader: true),
-                _buildTableCell("Đẳng cấp", isHeader: true),
-                _buildTableCell("Đơn vị tính", isHeader: true),
-                _buildTableCell("Số lượng", isHeader: true),
-                _buildTableCell("ĐVT (giao dịch)", isHeader: true),
-                _buildTableCell("SL (giao dịch)", isHeader: true),
-                _buildTableCell("Ghi chú", isHeader: true),
+                _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("sophieuyeucau", NameDefault: "Số phiếu yêu cầu"), isHeader: true),
+                _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("13", NameDefault: "Ngày ghi nhận"), isHeader: true),
+                _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("masanpham", NameDefault: "Mã sản phẩm"), isHeader: true),
+                _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("tensanpham", NameDefault: "Tên sản phẩm"), isHeader: true),
+                _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("dangcap", NameDefault: "Đẳng cấp"), isHeader: true),
+                _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("donvitinh", NameDefault: "Đơn vị tính"), isHeader: true),
+                _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("soluong", NameDefault: "Số lượng"), isHeader: true),
+                _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("donvitinh", NameDefault: "ĐVT (giao dịch)"), isHeader: true),
+                _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("soluong", NameDefault: "SL (giao dịch)"), isHeader: true),
+                _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("ghichu", NameDefault: "Ghi chú"), isHeader: true),
               ],
             ),
             for (var item in data)
@@ -131,14 +133,14 @@ class ChiTietDanhsachSanphamSreecn extends StatelessWidget {
             TableRow(
               decoration: BoxDecoration(color: Colors.grey[300]),
               children: [
-               _buildTableCell2("Số phiếu", isHeader: true),
-                _buildTableCell2("Ngày ghi nhận", isHeader: true),
-                _buildTableCell2("Mã sản phẩm", isHeader: true),
-                _buildTableCell2("Tên sản phẩm", isHeader: true),
-                _buildTableCell2("Đẳng cấp", isHeader: true),
-                _buildTableCell2("Đơn vị tính", isHeader: true),
-                _buildTableCell2("Số lượng", isHeader: true),
-                _buildTableCell2("Ghi chú", isHeader: true),
+               _buildTableCell2(LoadAppMobileLanguage.GetStringLanguage("sophieu", NameDefault: "Số phiếu"), isHeader: true),
+                _buildTableCell2(LoadAppMobileLanguage.GetStringLanguage("13", NameDefault: "Ngày ghi nhận"), isHeader: true),
+                _buildTableCell2(LoadAppMobileLanguage.GetStringLanguage("masanpham", NameDefault: "Mã sản phẩm"), isHeader: true),
+                _buildTableCell2(LoadAppMobileLanguage.GetStringLanguage("tensanpham", NameDefault: "Tên sản phẩm"), isHeader: true),
+                _buildTableCell2(LoadAppMobileLanguage.GetStringLanguage("dangcap", NameDefault: "Đẳng cấp"), isHeader: true),
+                _buildTableCell2(LoadAppMobileLanguage.GetStringLanguage("donvitinh", NameDefault: "Đơn vị tính"), isHeader: true),
+                _buildTableCell2(LoadAppMobileLanguage.GetStringLanguage("soluong", NameDefault: "Số lượng"), isHeader: true),
+                _buildTableCell2(LoadAppMobileLanguage.GetStringLanguage("ghichu", NameDefault: "Ghi chú"), isHeader: true),
               ],
             ),
             for (var item in data)

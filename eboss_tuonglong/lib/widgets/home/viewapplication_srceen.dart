@@ -4,7 +4,9 @@ import 'package:eboss_tuonglong/widgets/GiaoHangMau/danhsachphieugiaohangmau_wid
 import 'package:eboss_tuonglong/widgets/Notification/notication_wiget.dart';
 import 'package:eboss_tuonglong/widgets/thongke/danhsachsanphammau_sreen.dart';
 import 'package:eboss_tuonglong/widgets/thongke/thongkegiaohangmaui_srceen.dart';
+import 'package:eboss_tuonglong/widgets/thongke/thongketheodoitiendomau_sreen.dart';
 import 'package:flutter/material.dart';
+import 'package:eboss_tuonglong/common/LanguageText.dart';
 
 class ViewapplicationSrceen extends StatefulWidget {
   const ViewapplicationSrceen({super.key});
@@ -17,6 +19,8 @@ class _ViewapplicationSrceenState extends State<ViewapplicationSrceen> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Column(
         children: [
@@ -65,98 +69,111 @@ class _ViewapplicationSrceenState extends State<ViewapplicationSrceen> {
           ),
           // Hàng ngang các ô chức năng nằm ngay dưới header
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 16),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Danh sách báo cáo",style: TextStyle(fontSize: 15,color: Colors.grey,fontWeight: FontWeight.bold),),
+                LanguageText(
+                  nameId: '6',
+                  defaultValue: 'Danh sách báo cáo',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ThongKeGiaoHangMauSrceen(),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ThongKeGiaoHangMauSrceen(),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          Image(
+                            image: AssetImage("assets/iconquanlykho.png"),
+                            width: screenWidth * 0.2,
+                            height: screenHeight * 0.1,
+                          ),
+                          Container(
+                            child: LanguageText(
+                              nameId: 'theodoitiengiaohangmau',
+                              defaultValue: 'Giao hàng mẫu',
+                              style: TextStyle(fontSize: 12, color: Colors.grey)
+                            ),
+                            width: screenWidth * 0.3,
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image(
-                        image: AssetImage("assets/iconquanlykho.png"),
-                        width: 90,
-                        height: 90,
+                    ),
+                    // Khoảng cách giữa các ô
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DanhSachSanPhamMauSreen(),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image(
+                            image: AssetImage("assets/iconthongke.png"),
+                            width: screenWidth * 0.2,
+                            height: screenHeight * 0.1,
+                          ),
+                          Container(
+                            child: LanguageText(
+                              nameId: 'tiendosanxuat',
+                              defaultValue: 'Tiến độ sản xuất',
+                              style: TextStyle(fontSize: 12, color: Colors.grey)
+                            ),
+                            width: screenWidth * 0.3,
+                          ),
+                        ],
                       ),
-                      Text(
-                        "Giao hàng mẫu",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                        ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ThongketheodoitiendomauSreen(),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image(
+                            image: AssetImage("assets/icon_theodoitiendomau.png"),
+                            width: screenWidth * 0.15,
+                            height: screenHeight * 0.1,
+                          ),
+                          Container(
+                            child: LanguageText(
+                              nameId: 'theodoitiendomau',
+                              defaultValue: 'Tiến độ sản xuất',
+                             style: TextStyle(fontSize: 12, color: Colors.grey)
+                            ),
+                            width: screenWidth * 0.3,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: screenWidth * 0.09), // Khoảng cách giữa các ô
-                InkWell(
-                  onTap: () {
-                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DanhSachSanPhamMauSreen(),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image(
-                        image: AssetImage("assets/iconthongke.png"),
-                        width: 90,
-                        height: 90,
-                      ),
-                      Text(
-                        "Tiến độ sản xuất",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // // Ô 3
-                // InkWell(
-                //   onTap: () {
-                //     // TODO: Chuyển trang khác
-                //   },
-                //   child: Column(
-                //     mainAxisSize: MainAxisSize.min,
-                //     children: [
-                //       Image(
-                //         image: AssetImage("assets/iconquanlykho.png"),
-                //         width: 90,
-                //         height: 90,
-                //       ),
-                //       Text(
-                //         "Chức năng 3",
-                //         style: TextStyle(
-                //           color: Colors.black,
-                //           fontSize: 15,
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
               ],
             ),
-          
-              ],
-            )),
+          ),
           // Nội dung còn lại bên dưới
           Expanded(
             child: Container(

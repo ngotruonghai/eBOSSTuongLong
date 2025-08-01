@@ -1,3 +1,4 @@
+import 'package:eboss_tuonglong/common/LanguageText.dart';
 import 'package:eboss_tuonglong/services/NetWorkRequest.dart';
 import 'package:eboss_tuonglong/widgets/GiaoHangMau/chitietphieugiaohang_weidget.dart';
 import 'package:flutter/material.dart';
@@ -91,12 +92,15 @@ class _DanhSachPhieuGiaoHangMauWidgetsState
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF1F615C),
-        title: Text(
-          widget.Type == 0
+        title: LanguageText(nameId: widget.Type == 0
+              ? "21"
+              : widget.Type == 1
+                  ? "19"
+                  : "22", defaultValue: widget.Type == 0
               ? "Phiếu giao hàng mẫu"
               : widget.Type == 1
-              ? "Phiếu giao đến hạn"
-              : "Phiếu giao quá hạn",
+                  ? "Phiếu giao đến hạn"
+                  : "Phiếu giao quá hạn",        
           style: const TextStyle(fontSize: 20, color: Colors.white),
         ),
       ),
@@ -118,13 +122,7 @@ class _DanhSachPhieuGiaoHangMauWidgetsState
                         lsDanhSachPhieuMuaHang.isEmpty
                             ? [
                               const Center(
-                                child: Text(
-                                  "Không có dữ liệu",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.grey,
-                                  ),
-                                ),
+                                child:LanguageText(nameId: "nodata", defaultValue: "Không có dữ liệu", style: TextStyle(fontSize: 16, color: Colors.grey))
                               ),
                             ]
                             : lsDanhSachPhieuMuaHang.map((item) {
@@ -139,6 +137,11 @@ class _DanhSachPhieuGiaoHangMauWidgetsState
                                                 id: item.deliveryAID.toString(),
                                                 deliveryAID:
                                                     item.maPhieu.toString(),
+                                                salesManName:
+                                                    item.nhanVienKinhDoanh ?.toString() ??"",
+                                                    maPhieu: "${item.maPhieu.toString().trim()}",
+                                                deliveryID: item.deliveryID?.toString().trim() ?? "",
+                                                customerName: item.tenKhachHang?.toString().trim() ?? "",
                                               ),
                                     ),
                                   );
@@ -188,25 +191,30 @@ class _DanhSachPhieuGiaoHangMauWidgetsState
                                           ],
                                         ),
                                         const SizedBox(height: 8),
-                                        Text(
-                                          "Ngày ghi nhận: ${item.recordDate}",
+                                        LanguageText2(nameId: "13",defaultValue: "Ngày ghi nhận",textstring: ": " + item.recordDate.toString(), style: const TextStyle(fontSize: 13)),
+                                        const SizedBox(height: 4),
+                                        LanguageText2(
+                                          nameId: "12",
+                                          defaultValue: "Dự kiến trả lời",
+                                          textstring: ": " + item.responseDate.toString(),
                                           style: const TextStyle(fontSize: 13),
                                         ),
                                         const SizedBox(height: 4),
-                                        Text(
-                                          "Dự kiến trả lời: ${item.responseDate ?? "_"}",
+                                         LanguageText2(
+                                          nameId: "16",
+                                          defaultValue: "Nhân viên kinh doanh",
+                                          textstring: ": " + item.responseDate.toString(),
                                           style: const TextStyle(fontSize: 13),
-                                        ),
+                                        )
+                                        ,
                                         const SizedBox(height: 4),
-                                        Text(
-                                          "Nhân viên kinh doanh: ${item.nhanVienKinhDoanh ?? "_"}",
+                                         LanguageText2(
+                                          nameId: "36",
+                                          defaultValue: "Ý kiến khách hàng",
+                                          textstring: ": " + item.responseDate.toString(),
                                           style: const TextStyle(fontSize: 13),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          "Ý kiến khách hàng: ${item.YKienKhachHang ?? "_"}",
-                                          style: const TextStyle(fontSize: 13),
-                                        ),
+                                        )
+                                        ,
                                         const SizedBox(height: 4),
                                         Text(
                                           item.loaiPhieu.toString(),
@@ -221,19 +229,19 @@ class _DanhSachPhieuGiaoHangMauWidgetsState
                                           // ),
                                         ),
                                         const SizedBox(height: 4),
-                                        if (item.stattustSoNgayDaQua == 2)
+                                        if (item.stattustSoNgayDaQua == 1)
                                           Container(
                                             decoration: BoxDecoration(
-                                              color: Colors.green,
+                                              color: Colors.red,
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),
                                             height: 5,
                                           ),
-                                        if (item.stattustSoNgayDaQua == 1)
+                                        if (item.stattustSoNgayDaQua == 0)
                                           Container(
                                             decoration: BoxDecoration(
-                                              color: Colors.red,
+                                              color: Colors.black,
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),
@@ -253,30 +261,47 @@ class _DanhSachPhieuGiaoHangMauWidgetsState
         ),
       ),
       endDrawer: Drawer(
-        child: Padding(
+        child: SingleChildScrollView(
+          child: Padding(
           padding: const EdgeInsets.only(top: 70, left: 10, right: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Tên khách hàng"),
+              LanguageText(
+                nameId: "tenkhachhang",
+                defaultValue: "Tên khách hàng",
+                style: const TextStyle(fontSize: 13, color: Colors.black),
+              ),
               TextField(
                 decoration: const InputDecoration(border: OutlineInputBorder()),
                 controller: _tenkhachhang,
               ),
               SizedBox(height: 20),
-              const Text("Nhân viên kinh doanh"),
+               LanguageText(
+                nameId: "16",
+                defaultValue: "Nhân viên kinh doanh",
+                style: const TextStyle(fontSize: 13, color: Colors.black),
+              ),
               TextField(
                 decoration: const InputDecoration(border: OutlineInputBorder()),
                 controller: _nhanvienkinhoanh,
               ),
               SizedBox(height: 20),
-              const Text("Số phiếu giao"),
+              LanguageText(
+                nameId: "39",
+                defaultValue: "Số phiếu giao",
+                style: const TextStyle(fontSize: 13, color: Colors.black),
+              ),
               TextField(
                 decoration: const InputDecoration(border: OutlineInputBorder()),
                 controller: _masanpham,
               ),
               const SizedBox(height: 20),
-              const Text("Từ ngày"),
+              LanguageText(
+                nameId: "34",
+                defaultValue: "Từ ngày",
+                style: const TextStyle(fontSize: 13, color: Colors.black),
+              ),
               InkWell(
                 onTap: () {
                   _showCalendarFormDatePopup(context);
@@ -294,7 +319,11 @@ class _DanhSachPhieuGiaoHangMauWidgetsState
                 ),
               ),
               const SizedBox(height: 20),
-              const Text("Đến ngày"),
+               LanguageText(
+                nameId: "7",
+                defaultValue: "Đến ngày",
+                style: const TextStyle(fontSize: 13, color: Colors.black),
+              ),
               InkWell(
                 onTap: () {
                   _showCalendarToDatePopup(context);
@@ -321,12 +350,16 @@ class _DanhSachPhieuGiaoHangMauWidgetsState
                   backgroundColor: const Color(0xFF1F615C),
                   foregroundColor: Colors.white,
                 ),
-                child: const Text("Tìm kiếm"),
+                child:LanguageText(
+                nameId: "32",
+                defaultValue: "TÌm kiếm",
+                style: const TextStyle(fontSize: 13, color: Colors.white),
+              ),
               ),
             ],
           ),
         ),
-      ),
+        )),
     );
   }
 

@@ -60,7 +60,7 @@ class _UserinfoListTileComponent extends State<UserinfoListTileComponent> with S
                         child: Text(
                           widget.text,
                           style: TextStyle(
-                            fontSize: widget.screenWidth * 0.04,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
                             color: Colors.black, 
                           ),
@@ -78,7 +78,7 @@ class _UserinfoListTileComponent extends State<UserinfoListTileComponent> with S
                             softWrap: true,
                             overflow: TextOverflow.visible,
                             style: TextStyle(
-                              fontSize: widget.screenWidth * 0.033,
+                              fontSize: 13,
                               fontWeight: FontWeight.bold,
                               color: const Color.fromARGB(255, 80, 80, 80),
                             ),

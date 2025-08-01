@@ -22,4 +22,7 @@ class KeyServices{
    static String get RefreshToken{
     return "RefreshToken";
   }
+  static String get Language{
+    return "Language";
+  }
 }

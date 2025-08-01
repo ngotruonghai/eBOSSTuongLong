@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class NetWorkRequest {
-   static final timeout = Duration(seconds: 15);
+  static final timeout = Duration(seconds: 15);
   NetWorkRequest() {}
 
   static Future<Map<String, dynamic>> PostDefault(
@@ -70,6 +70,7 @@ class NetWorkRequest {
     BuildContext context,
   ) async {
     try {
+      LoadingOverlay.show(context);
       String url = HostService.Host_Mobile + endpoint;
       // Post API
       final response = await http
@@ -85,6 +86,7 @@ class NetWorkRequest {
             body: jsonEncode(data),
           )
           .timeout(timeout);
+      LoadingOverlay.hide(context);
       return _handleResponseContext(response, context);
     } catch (e) {
       SnackbarError.showSnackbar_Error(context, message: "Lỗi kết nối máy chủ");
@@ -92,10 +94,7 @@ class NetWorkRequest {
     }
   }
 
-  static Future<Map<String, dynamic>> Get(
-    String endpoint,
-    BuildContext context,
-  ) async {
+  static Future<Map<String, dynamic>> Get(String endpoint) async {
     String url = HostService.Host_Mobile + endpoint;
     final response = await http
         .get(
@@ -109,7 +108,7 @@ class NetWorkRequest {
           },
         )
         .timeout(timeout);
-    return _handleResponseContext(response, context);
+    return _handleResponse(response);
   }
 
   static Future<Map<String, dynamic>> GetDefault(
@@ -172,8 +171,29 @@ class NetWorkRequest {
     }
   }
 
+  static Future<Map<String, dynamic>> _handleResponse(
+    http.Response response,
+  ) async {
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        // Trả về dữ liệu đã được giải mã từ JSON
+        return json.decode(response.body);
+      } else {
+        // Xử lý lỗi và thông báo cho phía gọi
+        if (response.statusCode == 500) {
+        } else if (response.statusCode == 401) {
+        } else {}
+        return {"error": ""};
+      }
+    } catch (e) {
+      throw Exception('${response.statusCode.toString()}');
+    }
+  }
+
   static Future<void> Error404(BuildContext context) async {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
   }
 }

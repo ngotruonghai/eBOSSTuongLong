@@ -48,6 +48,7 @@ class Data {
   String? nguoiKiemTra;
   int? soNgayQuahan;
   String? responseDate;
+  String? responseDay;
   int? stattustSoNgayDaQua;
   String? YKienKhachHang;
   String? YKienLanhDao;
@@ -66,6 +67,7 @@ class Data {
       this.nguoiKiemTra,
       this.soNgayQuahan,
       this.responseDate,
+      this.responseDay,
       this.stattustSoNgayDaQua,
       this.YKienLanhDao});
 
@@ -83,6 +85,7 @@ class Data {
     nguoiKiemTra = json['NguoiKiemTra'];
     soNgayQuahan = json['SoNgayQuahan'];
     responseDate = json['ResponseDate'];
+    responseDay = json['ResponseDay'];
     stattustSoNgayDaQua = json['StattustSoNgayDaQua'];
     YKienKhachHang = json['YKienKhachHang'];
     YKienLanhDao = json['YKienLanhDao'];
@@ -103,6 +106,7 @@ class Data {
     data['NguoiKiemTra'] = this.nguoiKiemTra;
     data['SoNgayQuahan'] = this.soNgayQuahan;
     data['ResponseDate'] = this.responseDate;
+    data['ResponseDay'] = this.responseDay;
     data['StattustSoNgayDaQua'] = this.stattustSoNgayDaQua;
     data['YKienKhachHang'] = this.YKienKhachHang; 
     data['YKienLanhDao'] = this.YKienLanhDao; 
