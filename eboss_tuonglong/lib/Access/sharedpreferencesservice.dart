@@ -30,6 +30,8 @@ class SharedPreferencesService {
 
   static Future<bool> setDouble(String key, double value) =>
       _prefs.setDouble(key, value);
+  
+  static bool containsKey(String key) => _prefs.containsKey(key);
 
   static Future<bool> clear() => _prefs.clear();
 }

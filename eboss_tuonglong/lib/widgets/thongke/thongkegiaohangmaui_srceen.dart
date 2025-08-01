@@ -1,10 +1,12 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:eboss_tuonglong/common/LanguageText.dart';
 import 'package:eboss_tuonglong/provider/giaohangmauprovider.dart';
 import 'package:eboss_tuonglong/widgets/thongke/chitietsanphammau_srceen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:eboss_tuonglong/component/phieugiaohang/NhapYKien_srceen.dart';
 
 class ThongKeGiaoHangMauSrceen extends StatefulWidget {
   const ThongKeGiaoHangMauSrceen({super.key});
@@ -49,7 +51,10 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
       builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Theo dõi phiếu giao hàng mẫu'),
+            title: LanguageText(
+              nameId: "theodoitiengiaohangmau",
+              defaultValue: "Theo dõi phiếu giao hàng mẫu",
+            ),
             backgroundColor: const Color(0xFF225F59),
           ),
           body: Consumer<GiaoHangMauProvider>(
@@ -82,7 +87,7 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 24),
                     child: SizedBox(
-                      width: 1100,
+                      width: 1400,
                       child: DataTable2(
                         showCheckboxColumn:
                             false, // Thêm dòng này để ẩn checkbox
@@ -90,35 +95,58 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                         headingRowColor: MaterialStateProperty.all(
                           const Color(0xFF225F59),
                         ),
+                        columnSpacing: 8,
+                        horizontalMargin: 8,
                         headingTextStyle: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                         columns: [
                           DataColumn2(
-                            label: Text('${giaoHangProvider.items.length}'),
-                            fixedWidth:
-                                60, // hoặc ColumnSize.S nếu muốn dùng size mặc định
+                            label: Center(
+                              child: Text('${giaoHangProvider.items.length}'),
+                            ),
+                            fixedWidth: 50, // hoặc ColumnSize.S nếu muốn dùng size mặc định                            
                           ),
                           const DataColumn2(
-                            label: Text('Số phiếu giao'),
-                            size: ColumnSize.S,
-                          ),
-                          const DataColumn2(
-                            label: Text('Tên khách hàng'),
+                            label: LanguageText(
+                              nameId: "39",
+                              defaultValue: "Số phiếu giao",
+                            ),
                             size: ColumnSize.L,
                           ),
                           const DataColumn2(
-                            label: Text('Nhân viên \nkinh doanh'),
-                            size: ColumnSize.S,
+                            label: LanguageText(nameId: "tenkhachhang", defaultValue: "Tên khách hàng"),
+                            size: ColumnSize.L,
+                          ),
+                         
+                          const DataColumn2(
+                            label: LanguageText(nameId: "16", defaultValue: "Nhân viên kinh doanh"),
+                            size: ColumnSize.L,
                           ),
                            const DataColumn2(
-                            label: Text('Ngày dự kiến \ntrả lời'),
+                            label: LanguageText(nameId: "12", defaultValue: "Ngày dự kiến trả lời"),
+                            size: ColumnSize.L,
+                          ),
+                           const DataColumn2(
+                            label: LanguageText(nameId: "36", defaultValue: "Ý kiến khách hàng"),
+                            size: ColumnSize.L,
+                          ),
+                           const DataColumn2(
+                            label: LanguageText(nameId: "", defaultValue: "..."),
                             size: ColumnSize.S,
                           ),
                           const DataColumn2(
-                            label: Text('Ý kiến khách hàng'),
+                            label: LanguageText(nameId: "37", defaultValue: "Ý kiến ban lãnh đạo"),
                             size: ColumnSize.L,
+                          ),
+                          const DataColumn2(
+                            label: LanguageText(nameId: "", defaultValue: "..."),
+                            size: ColumnSize.S,
+                          ),
+                          const DataColumn2(
+                            label: LanguageText(nameId: "ResponseDay", defaultValue: "Số ngày KH phản hồi"),
+                            size: ColumnSize.S,
                           ),
                         ],
                         rows:
@@ -127,7 +155,7 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                               final item = entry.value;
                               Color? getColorByStatus(int? status) {
                                 if (status == 1) return Colors.red;
-                                if (status == 2) return Colors.green;
+                                if (status == 0) return Colors.black;
                                 return null;
                               }
 
@@ -147,7 +175,7 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                                   );
                                 },
                                 cells: [
-                                  DataCell(Text('${index + 1}')), // STT
+                                  DataCell(Center(child: Text('${index + 1}'))), // STT
                                   DataCell(
                                     Text(
                                       item.deliveryID ?? '',
@@ -171,7 +199,7 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                                         ),
                                       ),
                                     ),
-                                  ),
+                                  ),                                   
                                   DataCell(
                                     Text(
                                       item.nhanVienKinhDoanh??"".toString().trim() ?? '',
@@ -193,8 +221,152 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                                     ),
                                   ),
                                   DataCell(
+                                    GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder:
+                                              (context) => AlertDialog(
+                                                title: const LanguageText(
+                                                  nameId: "36",
+                                                  defaultValue:
+                                                      "Ý kiến khách hàng",
+                                                ),
+                                                content: SingleChildScrollView(
+                                                  // Dùng SingleChildScrollView nếu nội dung rất dài
+                                                  child: Text(
+                                                    item.YKienKhachHang
+                                                            ?.toString() ??
+                                                        '',
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed:
+                                                        () => Navigator.pop(
+                                                          context,
+                                                        ),
+                                                    child: LanguageText(nameId: "dong", defaultValue: "Đóng",
+                                                    style: TextStyle(fontSize: 13, color: Colors.black),),
+                                                  ),
+                                                ],
+                                              ),
+                                        );
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          item.YKienKhachHang?.toString() ?? '',
+                                          // <<< SỬA Ở ĐÂY
+                                          maxLines:
+                                              2, // Chỉ hiển thị tối đa 2 dòng
+                                          overflow:
+                                              TextOverflow
+                                                  .ellipsis, // Hiển thị "..." nếu dài hơn
+                                          style: TextStyle(
+                                            color: getColorByStatus(
+                                              item.stattustSoNgayDaQua,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    GestureDetector(
+                                      onTap: () {
+                                        final currentItem = item;
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => NhapykienSrceen(
+                                            ItemAID: "${currentItem.deliveryAID}",
+                                            ItemID: "${currentItem.deliveryID}",
+                                            Type: "01",
+                                          ),
+                                        );
+                                      },
+                                      child: Icon(
+                                        Icons.edit_note_outlined,
+                                          color: getColorByStatus(item.stattustSoNgayDaQua),
+                                          size: 30,                                     
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder:
+                                              (context) => AlertDialog(
+                                                title: const LanguageText(
+                                                  nameId: "37",
+                                                  defaultValue:
+                                                      "Ý kiến ban lãnh đạo",
+                                                ),
+                                                content: SingleChildScrollView(
+                                                  // Dùng SingleChildScrollView nếu nội dung rất dài
+                                                  child: Text(
+                                                    item.YKienLanhDao
+                                                            ?.toString() ??
+                                                        '',
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed:
+                                                        () => Navigator.pop(
+                                                          context,
+                                                        ),
+                                                    child: LanguageText(nameId: "dong", defaultValue: "Đóng",
+                                                    style: TextStyle(fontSize: 13, color: Colors.black),),
+                                                  ),
+                                                ],
+                                              ),
+                                        );
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          item.YKienLanhDao?.toString() ?? '',
+                                          // <<< SỬA Ở ĐÂY
+                                          maxLines:
+                                              2, // Chỉ hiển thị tối đa 2 dòng
+                                          overflow:
+                                              TextOverflow
+                                                  .ellipsis, // Hiển thị "..." nếu dài hơn
+                                          style: TextStyle(
+                                            color: getColorByStatus(
+                                              item.stattustSoNgayDaQua,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    GestureDetector(
+                                      onTap: () {
+                                        final currentItem = item;
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => NhapykienSrceen(
+                                            ItemAID: "${currentItem.deliveryAID}",
+                                            ItemID: "${currentItem.deliveryID}",
+                                            Type: "02",
+                                          ),
+                                        );
+                                      },
+                                      child: Icon(
+                                        Icons.edit_note_outlined,
+                                          color: getColorByStatus(item.stattustSoNgayDaQua),
+                                          size: 30,                                     
+                                      ),
+                                    ),
+                                  ),
+                                   DataCell(
                                     Text(
-                                      item.YKienKhachHang ?? '',
+                                      item.responseDay ?? '',
                                       style: TextStyle(
                                         color: getColorByStatus(
                                           item.stattustSoNgayDaQua,
@@ -219,7 +391,11 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Tên khách hàng"),
+                    LanguageText(
+                nameId: "tenkhachhang",
+                defaultValue: "Tên khách hàng",
+                style: const TextStyle(fontSize: 13, color: Colors.black),
+              ),
                     TextField(
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -227,7 +403,11 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                       controller: _tenkhachhang,
                     ),
                     SizedBox(height: 20),
-                    const Text("Nhân viên kinh doanh"),
+                    const  LanguageText(
+                nameId: "16",
+                defaultValue: "Nhân viên kinh doanh",
+                style: const TextStyle(fontSize: 13, color: Colors.black),
+              ),
                     TextField(
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -235,7 +415,11 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                       controller: _nhanvienkinhoanh,
                     ),
                     SizedBox(height: 20),
-                    const Text("Số phiếu giao"),
+                    const LanguageText(
+                      nameId: "39",
+                      defaultValue: "Số phiếu giao",
+                      style: TextStyle(fontSize: 13, color: Colors.black),
+                    ),
                     TextField(
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -243,7 +427,11 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                       controller: _masanpham,
                     ),
                     const SizedBox(height: 20),
-                    const Text("Từ ngày"),
+                    const LanguageText(
+                      nameId: "34",
+                      defaultValue: "Từ ngày",
+                      style: TextStyle(fontSize: 13, color: Colors.black),
+                    ),
                     InkWell(
                       onTap: () {
                         _showCalendarFormDatePopup(context);
@@ -261,7 +449,11 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Text("Đến ngày"),
+                    const LanguageText(
+                      nameId: "7",
+                      defaultValue: "Đến ngày",
+                      style: TextStyle(fontSize: 13, color: Colors.black),
+                    ),
                     InkWell(
                       onTap: () {
                         _showCalendarToDatePopup(context);
@@ -298,7 +490,7 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                         backgroundColor: const Color(0xFF1F615C),
                         foregroundColor: Colors.white,
                       ),
-                      child: const Text("Tìm kiếm"),
+                      child: LanguageText(defaultValue: "Tìm kiếm", nameId: "32",),
                     ),
                   ],
                 ),

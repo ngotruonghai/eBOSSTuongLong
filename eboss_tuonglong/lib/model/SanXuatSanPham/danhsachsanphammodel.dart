@@ -41,6 +41,7 @@ class Data {
   String? customerName;
   String? refOrderID;
   String? salesManAID;
+  String? deliveryYardDate;
   String? finishProduceDate;
   String? stockInDate;
   String? deliveryDate;
@@ -50,7 +51,7 @@ class Data {
   double? requestQty;
   double? stockInQty;
   double? deliveryQty;
-  bool? isFinish;
+  int? statusColor;
   String? finishStatus;
   String? sampleAID;
   String? nhanVienKinhDoanh;
@@ -65,6 +66,7 @@ class Data {
       this.customerName,
       this.refOrderID,
       this.salesManAID,
+      this.deliveryYardDate,
       this.finishProduceDate,
       this.stockInDate,
       this.deliveryDate,
@@ -74,7 +76,7 @@ class Data {
       this.requestQty,
       this.stockInQty,
       this.deliveryQty,
-      this.isFinish,
+      this.statusColor,
       this.finishStatus,
       this.sampleAID,
       this.nhanVienKinhDoanh,
@@ -89,6 +91,7 @@ class Data {
     customerName = json['CustomerName'];
     refOrderID = json['RefOrderID'];
     salesManAID = json['SalesManAID'];
+    deliveryYardDate = json['DeliveryYardDate'];
     finishProduceDate = json['FinishProduceDate'];
     stockInDate = json['StockInDate'];
     deliveryDate = json['DeliveryDate'];
@@ -98,7 +101,7 @@ class Data {
     requestQty = json['RequestQty'];
     stockInQty = json['StockInQty'];
     deliveryQty = json['DeliveryQty'];
-    isFinish = json['IsFinish'];
+    statusColor = json['StatusColor'];
     finishStatus = json['FinishStatus'];
     sampleAID = json['SampleAID'];
     nhanVienKinhDoanh = json['NhanVienKinhDoanh'];
@@ -115,6 +118,7 @@ class Data {
     data['CustomerName'] = this.customerName;
     data['RefOrderID'] = this.refOrderID;
     data['SalesManAID'] = this.salesManAID;
+    data['DeliveryYardDate'] = this.deliveryYardDate;
     data['FinishProduceDate'] = this.finishProduceDate;
     data['StockInDate'] = this.stockInDate;
     data['DeliveryDate'] = this.deliveryDate;
@@ -124,7 +128,7 @@ class Data {
     data['RequestQty'] = this.requestQty;
     data['StockInQty'] = this.stockInQty;
     data['DeliveryQty'] = this.deliveryQty;
-    data['IsFinish'] = this.isFinish;
+    data['StatusColor'] = this.statusColor;
     data['FinishStatus'] = this.finishStatus;
     data['SampleAID'] = this.sampleAID;
     data['NhanVienKinhDoanh'] = this.nhanVienKinhDoanh;

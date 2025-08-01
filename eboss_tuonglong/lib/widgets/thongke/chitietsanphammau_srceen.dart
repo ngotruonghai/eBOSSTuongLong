@@ -1,3 +1,5 @@
+import 'package:eboss_tuonglong/Access/mobilelanguageprovider.dart';
+import 'package:eboss_tuonglong/common/LanguageText.dart';
 import 'package:eboss_tuonglong/common/loadingoverlay.dart';
 import 'package:eboss_tuonglong/common/snackbarerror.dart';
 import 'package:eboss_tuonglong/model/SanXuatSanPham/chitietgiaohangpermission.dart';
@@ -57,7 +59,7 @@ class _ChiTietPhieuGiaoHangMauSrceenState
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF1F615C),
-          title: Text("Chi tiết phiếu giao hàng"),
+          title: LanguageText(nameId: "chitietphieugiaohang", defaultValue: "Chi tiết phiếu giao hàng"),
           titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
         ),
         body: RefreshIndicator(
@@ -112,15 +114,9 @@ class _ChiTietPhieuGiaoHangMauSrceenState
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Center(
-                      child: Text(
-                        "Không có dữ liệu",
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          color: Colors.grey,
-                        ),
-                      ),
+                      child: LanguageText(nameId: "nodata", defaultValue: "Không có dữ liệu", style: TextStyle(fontSize: 16, color: Colors.grey))
                     ),
-                  ),
+                  ),    
                 ),
                 for (int i = 0; i < 4; i++)
                   SizedBox.shrink(),
@@ -139,19 +135,18 @@ class _ChiTietPhieuGiaoHangMauSrceenState
     return TableRow(
       decoration: BoxDecoration(color: Colors.grey[300]),
       children: [
-        _buildTableCell("Số phiếu yêu cầu", isHeader: true),
-        _buildTableCell("Mã sản phẩm", isHeader: true),
-        _buildTableCell("Tên sản phẩm", isHeader: true),
-        _buildTableCell("Đẳng cấp", isHeader: true),
-        _buildTableCell("Đơn vị tính", isHeader: true),
-        _buildTableCell("SL", isHeader: true),
-        _buildTableCell("ĐVT giao dịch", isHeader: true),
-        
-        _buildTableCell("SL giao dich", isHeader: true),
-        _buildTableCell("Đơn giá \nVNĐ", isHeader: true),
-        _buildTableCell("Thành tiền \nVNĐ", isHeader: true),
-        _buildTableCell("Giá nhập", isHeader: true),
-         _buildTableCell("Ghi chú", isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("sophieuyeucau", NameDefault: "Số phiếu yêu cầu"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("masanpham", NameDefault: "Mã sản phẩm"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("tensanpham", NameDefault: "Tên sản phẩm"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("dangcap", NameDefault: "Đẳng cấp"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("donvitinh", NameDefault: "Đơn vị tính"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("soluong", NameDefault: "SL"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("dvtgiaodich", NameDefault: "ĐVT giao dịch"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("slgiaodich", NameDefault: "SL giao dịch"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("dongia", NameDefault: "Đơn giá VNĐ"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("thanhtien", NameDefault: "Thành tiền VNĐ"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("gianhap", NameDefault: "Giá nhập"), isHeader: true),
+        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("ghichu", NameDefault: "Ghi chú"), isHeader: true),
       ],
     );
   }

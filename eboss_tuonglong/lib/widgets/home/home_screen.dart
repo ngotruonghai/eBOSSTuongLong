@@ -2,6 +2,7 @@ import 'package:eboss_tuonglong/widgets/UserInfo/userinfo_screen.dart';
 import 'package:eboss_tuonglong/widgets/home/appbarbootom_screen.dart';
 import 'package:eboss_tuonglong/widgets/home/homeview_screen.dart';
 import 'package:eboss_tuonglong/widgets/home/viewapplication_srceen.dart';
+import 'package:eboss_tuonglong/widgets/test/testsrceen_view.dart';
 import 'package:flutter/material.dart';
 
 class Home_Screen extends StatefulWidget {
@@ -17,7 +18,8 @@ class _HomeState_Screen extends State<Home_Screen> {
   final List<Widget> _screens = [
     HomeViewScreen(),
     ViewapplicationSrceen(),
-    UserInfoScreen()
+    UserInfoScreen(),
+    TestsrceenView(),
   ];
 
   void onItemTapped(int index) {

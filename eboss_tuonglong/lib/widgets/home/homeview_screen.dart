@@ -1,5 +1,7 @@
 import 'package:eboss_tuonglong/Access/keyservices.dart';
+import 'package:eboss_tuonglong/Access/mobilelanguageprovider.dart';
 import 'package:eboss_tuonglong/Access/sharedpreferencesservice.dart';
+import 'package:eboss_tuonglong/common/LanguageText.dart';
 import 'package:eboss_tuonglong/widgets/GiaoHangMau/danhsachphieugiaohangmau_widgets.dart';
 import 'package:eboss_tuonglong/widgets/Notification/notication_wiget.dart';
 import 'package:flutter/material.dart';
@@ -189,8 +191,9 @@ class _HomeViewScreenState extends State<HomeViewScreen> {
                                         size: 50, // Đổi kích thước
                                       ),
                                       Center(
-                                        child: Text(
-                                          "Phiếu giao hàng",
+                                        child: LanguageText(
+                                          nameId: '20',
+                                          defaultValue: 'Phiếu giao hàng',
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold, // Đậm
@@ -230,8 +233,9 @@ class _HomeViewScreenState extends State<HomeViewScreen> {
                                         size: 50, // Đổi kích thước
                                       ),
                                       Center(
-                                        child: Text(
-                                          "Phiếu đến hạn",
+                                        child: LanguageText(
+                                          nameId: '18',
+                                          defaultValue: 'Phiếu đã giao',
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold, // Đậm
@@ -271,8 +275,9 @@ class _HomeViewScreenState extends State<HomeViewScreen> {
                                         size: 50, // Đổi kích thước
                                       ),
                                       Center(
-                                        child: Text(
-                                          "Phiếu quá hạn",
+                                        child: LanguageText(
+                                          nameId: '23',
+                                          defaultValue: 'Phiếu chưa giao',
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold, // Đậm

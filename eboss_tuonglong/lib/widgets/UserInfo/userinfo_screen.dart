@@ -1,4 +1,6 @@
 import 'package:eboss_tuonglong/Access/keyservices.dart';
+import 'package:eboss_tuonglong/Access/mobilelanguageprovider.dart';
+import 'package:eboss_tuonglong/common/LanguageText.dart';
 import 'package:eboss_tuonglong/widgets/UserInfo/component/userinfo_list_tile_component.dart';
 import 'package:eboss_tuonglong/widgets/login/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -41,8 +43,7 @@ class _UserInfoScreen extends State<UserInfoScreen> {
                           KeyServices.UserName,
                         ),
                         style: TextStyle(
-                          fontSize: screenWidth * 0.05,
-                          backgroundColor: Colors.white,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
@@ -83,7 +84,7 @@ class _UserInfoScreen extends State<UserInfoScreen> {
               child: Text(
                 "",
                 style: TextStyle(
-                  fontSize: screenWidth * 0.035,
+                  fontSize: 13,
                   backgroundColor: Colors.white,
                   fontWeight: FontWeight.bold,
                   color: Colors.lightBlue,
@@ -98,11 +99,11 @@ class _UserInfoScreen extends State<UserInfoScreen> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: EdgeInsets.only(left: screenWidth * 0.04),
-                child: Text(
-                  "Thông tin",
+                child: LanguageText(
+                  nameId: "30",
+                  defaultValue: "Thông tin",
                   style: TextStyle(
-                    fontSize: screenWidth * 0.045,
-                    backgroundColor: Colors.white,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -115,9 +116,8 @@ class _UserInfoScreen extends State<UserInfoScreen> {
             UserinfoListTileComponent(
               screenWidth: screenWidth,
               icon: "assets/profile.png",
-              text: "Cá Nhân",
-              subText:
-                  "Lý lịch, người thân, danh sách đăng ký người phụ thuộc, visa, hộ chiếu, GPLD, bằng cấp, chứng chỉ, kinh nghiệm làm việc",
+              text: LoadAppMobileLanguage.GetStringLanguage("2", NameDefault: "VN"),
+              subText: LoadAppMobileLanguage.GetStringLanguage("LyLich", NameDefault: "VN"),
               data: ["123"],
               containSubtext: true,
             ),
@@ -127,21 +127,8 @@ class _UserInfoScreen extends State<UserInfoScreen> {
             UserinfoListTileComponent(
               screenWidth: screenWidth,
               icon: "assets/profile.png",
-              text: "Quá trình làm việc tại Công ty",
-              subText:
-                  "Hợp đồng, quá trình làm việc, chức danh kiểm nhiệm, khen thưởng, kỷ luật",
-              data: ["123"],
-              containSubtext: true,
-            ),
-
-            SizedBox(height: screenWidth * 0.04),
-
-            UserinfoListTileComponent(
-              screenWidth: screenWidth,
-              icon: "assets/profile.png",
-              text: "Thu nhập",
-              subText:
-                  "Phiếu lương, phiếu thưởng, quyết toán thuế TNCN, quá trình lương",
+              text: LoadAppMobileLanguage.GetStringLanguage("Wokring", NameDefault: "VN"),
+              subText: LoadAppMobileLanguage.GetStringLanguage("Contract", NameDefault: "VN"),
               data: ["123"],
               containSubtext: true,
             ),
@@ -152,11 +139,11 @@ class _UserInfoScreen extends State<UserInfoScreen> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: EdgeInsets.only(left: screenWidth * 0.04),
-                child: Text(
-                  "Cài đặt",
+                child: LanguageText(
+                  nameId: "3",
+                  defaultValue: "Cài đặt",
                   style: TextStyle(
-                    fontSize: screenWidth * 0.045,
-                    backgroundColor: Colors.white,
+                    fontSize: 13,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -169,40 +156,46 @@ class _UserInfoScreen extends State<UserInfoScreen> {
             UserinfoListTileComponent(
               screenWidth: screenWidth,
               icon: "assets/profile.png",
-              text: "Ngôn ngữ",
-              subText: "Tiếng việt",
+              text: LoadAppMobileLanguage.GetStringLanguage("15", NameDefault: "VN"),
+              subText: LoadAppMobileLanguage.GetStringLanguage("Vietnamese", NameDefault: "VN"),
               data: ["123"],
               containSubtext: true,
             ),
 
             SizedBox(height: screenWidth * 0.04),
-
-            UserinfoListTileComponent(
-              screenWidth: screenWidth,
-              icon: "assets/profile.png",
-              text: "Bảo mật ứng dụng",
-              subText: "Khoá ứng dụng bằng sinh trắc học",
-              data: ["123"],
-              containSubtext: true,
-            ),
-
-            InkWell(
-              onTap: () async {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.clear();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
-              },
-              child: Padding(
-                padding: EdgeInsets.only(left: 50, top: 20),
-                child: Container(
-                  alignment: Alignment.centerLeft, // Đặt nội dung về bên trái
-                  child: Text("Đăng xuất"),
+            
+            Padding(padding: EdgeInsetsGeometry.only(left: 20),
+            child: Row(
+              children: [
+                Icon(Icons.logout),
+                InkWell(
+                  onTap: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.clear();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10, top: 0),
+                    child: Container(
+                      alignment:
+                          Alignment.centerLeft, // Đặt nội dung về bên trái
+                      child: LanguageText(
+                        nameId: "dangxuat",
+                        defaultValue: "Đăng xuất",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              ],
+            ),)
           ],
         ),
       ),
