@@ -74,9 +74,7 @@ Widget _LoginWidget(BuildContext context) {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            // Phần nội dung chính có thể cuộn
             Expanded(
-              // ✨ THAY ĐỔI 1: BỎ WIDGET `Center` BỌC BÊN NGOÀI
               child: SingleChildScrollView(
                 child: Column(
                   // ✨ THAY ĐỔI 2: ĐỔI THÀNH .start ĐỂ CĂN LÊN TRÊN
