@@ -352,7 +352,7 @@ class _DanhSachPhieuGiaoHangMauWidgetsState
                 ),
                 child:LanguageText(
                 nameId: "32",
-                defaultValue: "TÌm kiếm",
+                defaultValue: "Tìm kiếm",
                 style: const TextStyle(fontSize: 13, color: Colors.white),
               ),
               ),

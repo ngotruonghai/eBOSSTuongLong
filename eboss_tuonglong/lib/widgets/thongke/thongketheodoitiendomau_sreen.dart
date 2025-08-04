@@ -84,7 +84,7 @@ class _ThongketheodoitiendomauSreenState
                   scrollDirection: Axis.horizontal,
                   child: Padding(padding: const EdgeInsets.only(bottom: 24),
                   child:  SizedBox(
-                     width: 1500,
+                     width: 1400,
                      child: DataTable2(
                         showCheckboxColumn:
                             false, // Thêm dòng này để ẩn checkbox
