@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCN1dXNVW3nTIuLIy1aGXmnBYgeDufaINE</string>
+	<string>AIzaSyCttwNIz_BljBRj11NMOelWuPeIgooitCI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>212234755678</string>
+	<string>410944411117</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.eboss.tuonglongs</string>
+	<string>ebosstuonglong</string>
 	<key>PROJECT_ID</key>
-	<string>eboss-tuong-long</string>
+	<string>boss-tuonglong</string>
 	<key>STORAGE_BUCKET</key>
-	<string>eboss-tuong-long.firebasestorage.app</string>
+	<string>boss-tuonglong.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:212234755678:ios:f691bc9c6247bbaac39ecf</string>
+	<string>1:410944411117:ios:0348e9f44b7b0ee96543e4</string>
 </dict>
 </plist>
