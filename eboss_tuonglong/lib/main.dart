@@ -2,20 +2,22 @@ import 'package:eboss_tuonglong/services/NotificationService.dart';
 import 'package:eboss_tuonglong/widgets/login/login_screen.dart';
 import 'package:eboss_tuonglong/widgets/test/testsrceen_view.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
+ // Bắt buộc phải có cho async trong main
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
-  // Khởi tạo notification service
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
   await NotificationService.init();
-
-  // Lấy token để gửi lên server của bạn
   await NotificationService.getFCMToken();
-
-  // Kiểm tra nếu app được mở từ một thông báo khi đã bị tắt
+  // Kiểm tra nếu app được mở từ 1 notification khi bị terminate
   await NotificationService.checkForInitialMessage();
    await initializeDateFormatting('vi', null); // <-- ĐÂY là phần bạn thiếu
   runApp(const MyApp());

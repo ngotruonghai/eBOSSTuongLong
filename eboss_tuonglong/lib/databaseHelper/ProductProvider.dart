@@ -21,7 +21,6 @@ class ProductProvider {
     return _database!;
   }
 
-
   // Khởi tạo database
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'product_database.db');

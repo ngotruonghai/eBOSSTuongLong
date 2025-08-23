@@ -1,6 +1,6 @@
 class HostService{
    static String get Host_Mobile{
-     return "https://eboss.vn:83";
+     return "http://10.0.2.2:7275";
    }
    static bool get OnOffSongNgu{
       return true; 

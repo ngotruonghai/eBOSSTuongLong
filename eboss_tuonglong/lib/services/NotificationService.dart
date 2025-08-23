@@ -29,7 +29,6 @@ class NotificationService {
       FirebaseMessaging.instance;
   static final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-      
 
   /// Kênh thông báo cho Android.
   /// Bắt buộc phải có từ Android 8.0 trở lên.
@@ -124,44 +123,37 @@ class NotificationService {
 
   /// Cài đặt các trình lắng nghe sự kiện của Firebase Messaging
   static Future<void> _setupFirebaseListeners() async {
-    // Xử lý tin nhắn khi ứng dụng đang ở trạng thái background/terminated
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-    // Xử lý tin nhắn khi ứng dụng đang ở trạng thái foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
+      print('Message notification: ${message.notification}');
 
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
+      String? title = message.notification?.title ?? message.data['title'];
+      String? body = message.notification?.body ?? message.data['body'];
 
-      // Nếu có thông báo và là trên Android, hiển thị nó bằng local notifications
-      if (notification != null && android != null) {
+      if (title != null && body != null) {
         _localNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
+          message.hashCode,
+          title,
+          body,
+          const NotificationDetails(
             android: AndroidNotificationDetails(
-              _androidChannel.id,
-              _androidChannel.name,
-              channelDescription: _androidChannel.description,
-              icon: android.smallIcon, // Sử dụng icon từ payload nếu có
-              // các thuộc tính khác...
+              'high_importance_channel',
+              'High Importance Notifications',
+              importance: Importance.max,
+              priority: Priority.high,
+              icon: '@mipmap/ic_launcher',
+            ),
+            iOS: DarwinNotificationDetails(
+              presentAlert: true,
+              presentBadge: true,
+              presentSound: true,
             ),
           ),
-          payload: message.data['route'] as String?, // Ví dụ payload
         );
+      } else {
+        print("⚠️ Không có title/body để hiển thị");
       }
-    });
-
-    // Xử lý khi người dùng nhấn vào thông báo để mở ứng dụng
-    // (từ trạng thái background hoặc terminated)
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
-      print('Message data: ${message.data}');
-      // Điều hướng tới màn hình cụ thể dựa vào data của message
-      // Ví dụ: Get.toNamed(message.data['route']);
     });
   }
 
