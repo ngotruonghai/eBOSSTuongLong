@@ -173,6 +173,27 @@ class _DanhSachSanPhamMauSreenStateState extends State<DanhSachSanPhamMauSreen>
                           ),
                           const DataColumn2(
                             label: LanguageText(
+                              nameId: "ProduceDay",
+                              defaultValue: "Số ngày sản xuất",
+                            ),
+                            size: ColumnSize.L,
+                          ),
+                          const DataColumn2(
+                            label: LanguageText(
+                              nameId: "StatusSID",
+                              defaultValue: "Trạng thái",
+                            ),
+                            size: ColumnSize.L,
+                          ),
+                          const DataColumn2(
+                            label: LanguageText(
+                              nameId: "RequestQty",
+                              defaultValue: "SL yêu cầu",
+                            ),
+                            size: ColumnSize.L,
+                          ),
+                          const DataColumn2(
+                            label: LanguageText(
                               nameId: "StockInQty",
                               defaultValue: "SL nhập kho",
                             ),
@@ -365,8 +386,30 @@ class _DanhSachSanPhamMauSreenStateState extends State<DanhSachSanPhamMauSreen>
                                   ),
                                   DataCell(
                                     Text(
-                                      item.stockInQty?.toString() != null
-                                          ? formatter.format(item.stockInQty)
+                                      item.produceDay ?? '',
+                                      style: TextStyle(
+                                        color: getColorByStatus(
+                                          item.statusColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Text(
+                                      item.statusSID ?? '',
+                                      style: TextStyle(
+                                        color: getColorByStatus(
+                                          item.statusColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Text(
+                                      item.requestQty != null && item.requestQty!.isNotEmpty
+                                          ? formatter.format(
+                                              double.tryParse(item.requestQty!) ?? 0,
+                                            )
                                           : "",
                                       style: TextStyle(
                                         color: getColorByStatus(
@@ -377,8 +420,22 @@ class _DanhSachSanPhamMauSreenStateState extends State<DanhSachSanPhamMauSreen>
                                   ),
                                   DataCell(
                                     Text(
-                                      item.deliveryQty?.toString() != null
-                                          ? formatter.format(item.deliveryQty)
+                                      item.stockInQty != null && item.stockInQty!.isNotEmpty
+                                          ? formatter.format(
+                                              double.tryParse(item.stockInQty!) ?? 0,
+                                            )
+                                          : "",
+                                      style: TextStyle(
+                                        color: getColorByStatus(item.statusColor),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Text(
+                                      item.deliveryQty != null && item.deliveryQty!.isNotEmpty
+                                          ? formatter.format(
+                                              double.tryParse(item.deliveryQty!) ?? 0,
+                                            )
                                           : "",
                                       style: TextStyle(
                                         color: getColorByStatus(

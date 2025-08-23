@@ -154,6 +154,7 @@ class _ThongKeGiaoHangMauSrceenState extends State<ThongKeGiaoHangMauSrceen> {
                               final index = entry.key;
                               final item = entry.value;
                               Color? getColorByStatus(int? status) {
+                                if (status == 2) return Colors.green;
                                 if (status == 1) return Colors.red;
                                 if (status == 0) return Colors.black;
                                 return null;

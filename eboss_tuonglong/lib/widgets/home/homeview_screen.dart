@@ -157,42 +157,42 @@ class _HomeViewScreenState extends State<HomeViewScreen> {
                               bottom: 10,
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                InkWell(
-                                  onTap: () => {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            DanhSachPhieuGiaoHangMauWidgets(
-                                          Type: 0,
-                                        ),
-                                      ),
-                                    ),
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.warehouse_outlined,
-                                        color: const Color.fromARGB(
-                                            255, 36, 133, 73),
-                                        size: 50,
-                                      ),
-                                      SizedBox(height: 5),
-                                      LanguageText(
-                                        nameId: '20',
-                                        defaultValue: 'Phiếu giao hàng',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                // InkWell(
+                                //   onTap: () => {
+                                //     Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             DanhSachPhieuGiaoHangMauWidgets(
+                                //           Type: 0,
+                                //         ),
+                                //       ),
+                                //     ),
+                                //   },
+                                //   child: Column(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: [
+                                //       Icon(
+                                //         Icons.warehouse_outlined,
+                                //         color: const Color.fromARGB(
+                                //             255, 36, 133, 73),
+                                //         size: 50,
+                                //       ),
+                                //       SizedBox(height: 5),
+                                //       LanguageText(
+                                //         nameId: '20',
+                                //         defaultValue: 'Phiếu giao hàng',
+                                //         style: TextStyle(
+                                //           fontSize: 12,
+                                //           fontWeight: FontWeight.bold,
+                                //           color: Colors.black,
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
                                 InkWell(
                                   onTap: () => {
                                     Navigator.push(
@@ -227,6 +227,7 @@ class _HomeViewScreenState extends State<HomeViewScreen> {
                                     ],
                                   ),
                                 ),
+                                SizedBox(width: 30),
                                 InkWell(
                                   onTap: () => {
                                     Navigator.push(

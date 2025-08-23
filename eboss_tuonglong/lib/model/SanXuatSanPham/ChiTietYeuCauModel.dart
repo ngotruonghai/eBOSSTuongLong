@@ -1,14 +1,14 @@
-class ChiTietNhapKhoModel {
+class ChiTietYeuCauModel {
   bool? succeeded;
   int? code;
   Null? message;
   Null? errors;
   List<Data>? data;
 
-  ChiTietNhapKhoModel(
+  ChiTietYeuCauModel(
       {this.succeeded, this.code, this.message, this.errors, this.data});
 
-  ChiTietNhapKhoModel.fromJson(Map<String, dynamic> json) {
+  ChiTietYeuCauModel.fromJson(Map<String, dynamic> json) {
     succeeded = json['succeeded'];
     code = json['code'];
     message = json['message'];
@@ -35,46 +35,40 @@ class ChiTietNhapKhoModel {
 }
 
 class Data {
-  String? stockID;
-  String? recordDate;
-  String? productID;
-  String? productType;
-  String? productName;
-  String? unitID;
-  String? qty;
+  String? inOrder;
+  String? categoriesID;
+  String? categoriesName;
+  String? description;
   String? remark;
+  String? sampleAID;
 
   Data(
-      {this.stockID,
-      this.recordDate,
-      this.productID,
-      this.productType,
-      this.unitID,
-      this.qty,
-      this.remark,
-      this.productName});
+      {
+        this.inOrder,
+        this.categoriesID,
+        this.categoriesName,
+        this.description,
+        this.remark,
+        this.sampleAID,
+      });
 
   Data.fromJson(Map<String, dynamic> json) {
-    stockID = json['StockID'];
-    recordDate = json['RecordDate'];
-    productID = json['ProductID'];
-    productType = json['ProductType'];
-    unitID = json['UnitID'];
-    qty = json['Qty'];
+    inOrder = json['InOrder'];
+    categoriesID = json['CategoriesID'];
+    categoriesName = json['CategoriesName'];
+    description = json['Description'];
     remark = json['Remark'];
-    productName = json['ProductName'];
+    sampleAID = json['SampleAID'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['StockID'] = this.stockID;
-    data['RecordDate'] = this.recordDate;
-    data['ProductID'] = this.productID;
-    data['ProductType'] = this.productType;
-    data['UnitID'] = this.unitID;
-    data['Qty'] = this.qty;
+    data['InOrder'] = this.inOrder;
+    data['CategoriesID'] = this.categoriesID;
+    data['CategoriesName'] = this.categoriesName;
+    data['Description'] = this.description;
     data['Remark'] = this.remark;
-    data['ProductName'] = this.productName;
+    data['SampleAID'] = this.sampleAID;
     return data;
   }
 }

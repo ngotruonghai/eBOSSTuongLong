@@ -35,6 +35,8 @@ class TheoDoiTienDoMauModel {
 }
 
 class Data {
+  String? sampleID;
+  String? recordDate;
   String? maDonHang;
   String? tenKhachHang;
   String? nhanVienKinhDoanh;
@@ -46,7 +48,9 @@ class Data {
   String? nhanXetHangNhapKho;
 
   Data(
-      {this.maDonHang,
+      {this.sampleID,
+      this.recordDate,
+      this.maDonHang,
       this.tenKhachHang,
       this.nhanVienKinhDoanh,
       this.ngayCoSoi,
@@ -57,6 +61,8 @@ class Data {
       this.nhanXetHangNhapKho});
 
   Data.fromJson(Map<String, dynamic> json) {
+    sampleID = json['SampleID'];
+    recordDate = json['RecordDate'];
     maDonHang = json['MaDonHang'];
     tenKhachHang = json['TenKhachHang'];
     nhanVienKinhDoanh = json['NhanVienKinhDoanh'];
@@ -70,6 +76,8 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['SampleID'] = this.sampleID;
+    data['RecordDate'] = this.recordDate;
     data['MaDonHang'] = this.maDonHang;
     data['TenKhachHang'] = this.tenKhachHang;
     data['NhanVienKinhDoanh'] = this.nhanVienKinhDoanh;

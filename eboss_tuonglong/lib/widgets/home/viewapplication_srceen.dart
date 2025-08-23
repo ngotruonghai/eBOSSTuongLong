@@ -5,6 +5,7 @@ import 'package:eboss_tuonglong/widgets/Notification/notication_wiget.dart';
 import 'package:eboss_tuonglong/widgets/thongke/danhsachsanphammau_sreen.dart';
 import 'package:eboss_tuonglong/widgets/thongke/thongkegiaohangmaui_srceen.dart';
 import 'package:eboss_tuonglong/widgets/thongke/thongketheodoitiendomau_sreen.dart';
+import 'package:eboss_tuonglong/widgets/thongke/thongketheodoitiendoxulymau_srceen.dart';
 import 'package:flutter/material.dart';
 import 'package:eboss_tuonglong/common/LanguageText.dart';
 
@@ -162,6 +163,39 @@ class _ViewapplicationSrceenState extends State<ViewapplicationSrceen> {
                             child: LanguageText(
                               nameId: 'theodoitiendomau',
                               defaultValue: 'Tiến độ sản xuất',
+                             style: TextStyle(fontSize: 12, color: Colors.grey)
+                            ),
+                            width: screenWidth * 0.3,
+                          ),
+                        ],
+                      ),
+                    ),                    
+                  ],
+                ),
+                Row(
+                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ThongKeTheoDoiXuLyMauSrceen(),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image(
+                            image: AssetImage("assets/icontheodoitiendoxulymau.png"),
+                            width: screenWidth * 0.15,
+                            height: screenHeight * 0.1,
+                          ),
+                          Container(
+                            child: LanguageText(
+                              nameId: 'tiendoxulymau',
+                              defaultValue: 'Tiến độ xử lý mẫu',
                              style: TextStyle(fontSize: 12, color: Colors.grey)
                             ),
                             width: screenWidth * 0.3,

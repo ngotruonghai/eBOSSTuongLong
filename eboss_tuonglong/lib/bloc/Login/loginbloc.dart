@@ -7,6 +7,7 @@ import 'package:eboss_tuonglong/common/snackbarerror.dart';
 import 'package:eboss_tuonglong/databaseHelper/mobilelanguageProvider.dart';
 import 'package:eboss_tuonglong/model/Login/loginmodel.dart';
 import 'package:eboss_tuonglong/services/NetWorkRequest.dart';
+import 'package:eboss_tuonglong/services/NotificationService.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'LoginEvent.dart';
@@ -42,6 +43,7 @@ class LoginBloc extends Bloc<LoginEvent, Loginstate> {
           "refestToken": prefs.get(KeyServices.RefestToken),
           "mobileCode": "ebossMobile",
           "ip": "NULL",
+          "fcmToken":  await NotificationService.getFCMToken(),
         };
         final response = await NetWorkRequest.PostDefault(
           "/api/User/RefestTokenNew",
@@ -76,11 +78,14 @@ class LoginBloc extends Bloc<LoginEvent, Loginstate> {
   ) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String lang =  prefs.get(KeyServices.Language).toString();
+      String lang = prefs.get(KeyServices.Language).toString();
       if (event.username == "" || event.password == "") {
         SnackbarError.showSnackbar_Waiting(
           event.context,
-          message: lang == "EN" ? "Please fill in all information":"Vui lòng điền đầy đủ thông tin!",
+          message:
+              lang == "EN"
+                  ? "Please fill in all information"
+                  : "Vui lòng điền đầy đủ thông tin!",
         );
       } else {
         LoadingOverlay.show(event.context);
@@ -88,6 +93,7 @@ class LoginBloc extends Bloc<LoginEvent, Loginstate> {
         Map<String, dynamic> request = {
           "userName": event.username,
           "password": event.password,
+          "fcmToken":  await NotificationService.getFCMToken(),
         };
         final response = await NetWorkRequest.PostDefault(
           "/api/User/LoginUser",
@@ -99,7 +105,6 @@ class LoginBloc extends Bloc<LoginEvent, Loginstate> {
         LoadingOverlay.hide(event.context);
 
         if (reponse.data?.allowAccess == true) {
-          
           await SharedPreferencesService.init();
           prefs.setString(KeyServices.Token, reponse.data!.token.toString());
           prefs.setString(

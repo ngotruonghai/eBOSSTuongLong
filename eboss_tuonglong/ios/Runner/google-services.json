@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "410944411117",
+    "project_id": "boss-tuonglong",
+    "storage_bucket": "boss-tuonglong.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410944411117:android:c51c9d5c7f744d256543e4",
+        "android_client_info": {
+          "package_name": "com.eboss.tuonglongs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzGT7Xm2XMykQlYBqM_dMijPO-iAfnUY4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,8 @@
 class ChiTietGiaoHangMauModel {
   bool? succeeded;
   int? code;
-  Null? message;
-  Null? errors;
+  String? message;
+  String? errors;
   List<Data>? data;
 
   ChiTietGiaoHangMauModel(
@@ -35,87 +35,71 @@ class ChiTietGiaoHangMauModel {
 }
 
 class Data {
+  String? processSampleAID;
   String? deliveryID;
   String? recordDate;
-  String? customerName;
-  String? salesManName;
-  String? responseDate;
-  String? commentsCustomer;
-  String? commentsManagement;
-  String? responseDay;
   String? productID;
+  String? productName;
   String? productType;
   String? productTypeName;
   String? unitID;
+  String? unitName;
   String? qty;
   String? dealUnitID;
+  String? dealUnitName;
   String? dealQty;
   String? remark;
-  String? sampleAID;
-  String? productName;
 
   Data(
-      {this.deliveryID,
+      {
+      this.processSampleAID,
+      this.deliveryID,
       this.recordDate,
-      this.customerName,
-      this.salesManName,
-      this.responseDate,
-      this.commentsCustomer,
-      this.commentsManagement,
-      this.responseDay,
       this.productID,
+      this.productName,
       this.productType,
       this.productTypeName,
       this.unitID,
+      this.unitName,
       this.qty,
       this.dealUnitID,
+      this.dealUnitName,
       this.dealQty,
       this.remark,
-      this.sampleAID,
-      this.productName
       });
 
-  Data.fromJson(Map<String, dynamic> json) {
-    deliveryID = json['DeliveryID'];
-    recordDate = json['RecordDate'];
-    customerName = json['CustomerName'];
-    salesManName = json['SalesManName'];
-    responseDate = json['ResponseDate'];
-    commentsCustomer = json['CommentsCustomer'];
-    commentsManagement = json['CommentsManagement'];
-    responseDay = json['ResponseDay'];
-    productID = json['ProductID'];
-    productType = json['ProductType'];
-    productTypeName = json['ProductTypeName'];
-    unitID = json['UnitID'];
-    qty = json['Qty'];
-    dealUnitID = json['DealUnitID'];
-    dealQty = json['DealQty'];
-    remark = json['Remark'];
-    sampleAID = json['SampleAID'];
-    productName = json['ProductName'];
-  }
+  Data.fromJson(Map<String, dynamic> json)
+      : processSampleAID = json['ProcessSampleAID'],
+        deliveryID = json['DeliveryID'],
+        recordDate = json['RecordDate'],
+        productID = json['ProductID'],
+        productName = json['ProductName'],
+        productType = json['ProductType'],
+        productTypeName = json['ProductTypeName'],
+        unitID = json['UnitID'],
+        unitName = json['UnitName'],
+        qty = json['Qty'],
+        dealUnitID = json['DealUnitID'],
+        dealUnitName = json['DealUnitName'],
+        dealQty = json['DealQty'],
+        remark = json['Remark'];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['ProcessSampleAID'] = this.processSampleAID;
     data['DeliveryID'] = this.deliveryID;
     data['RecordDate'] = this.recordDate;
-    data['CustomerName'] = this.customerName;
-    data['SalesManName'] = this.salesManName;
-    data['ResponseDate'] = this.responseDate;
-    data['CommentsCustomer'] = this.commentsCustomer;
-    data['CommentsManagement'] = this.commentsManagement;
-    data['ResponseDay'] = this.responseDay;
     data['ProductID'] = this.productID;
+    data['ProductName'] = this.productName;
     data['ProductType'] = this.productType;
     data['ProductTypeName'] = this.productTypeName;
     data['UnitID'] = this.unitID;
+    data['UnitName'] = this.unitName;
     data['Qty'] = this.qty;
     data['DealUnitID'] = this.dealUnitID;
+    data['DealUnitName'] = this.dealUnitName;
     data['DealQty'] = this.dealQty;
     data['Remark'] = this.remark;
-    data['SampleAID'] = this.sampleAID;
-    data['ProductName'] = this.productName;
     return data;
   }
 }

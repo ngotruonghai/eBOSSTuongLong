@@ -46,11 +46,12 @@ class Data {
   String? stockInDate;
   String? deliveryDate;
   String? responseDate;
-  int? produceDay;
-  int? responseDay;
-  double? requestQty;
-  double? stockInQty;
-  double? deliveryQty;
+  String? produceDay;
+  String? responseDay;
+  String? requestQty;
+  String? stockInQty;
+  String? deliveryQty;
+  String? statusSID;
   int? statusColor;
   String? finishStatus;
   String? sampleAID;
@@ -76,6 +77,7 @@ class Data {
       this.requestQty,
       this.stockInQty,
       this.deliveryQty,
+      this.statusSID,
       this.statusColor,
       this.finishStatus,
       this.sampleAID,
@@ -101,6 +103,7 @@ class Data {
     requestQty = json['RequestQty'];
     stockInQty = json['StockInQty'];
     deliveryQty = json['DeliveryQty'];
+    statusSID = json['StatusSID'];
     statusColor = json['StatusColor'];
     finishStatus = json['FinishStatus'];
     sampleAID = json['SampleAID'];
@@ -128,6 +131,7 @@ class Data {
     data['RequestQty'] = this.requestQty;
     data['StockInQty'] = this.stockInQty;
     data['DeliveryQty'] = this.deliveryQty;
+    data['StatusSID'] = this.statusSID;
     data['StatusColor'] = this.statusColor;
     data['FinishStatus'] = this.finishStatus;
     data['SampleAID'] = this.sampleAID;

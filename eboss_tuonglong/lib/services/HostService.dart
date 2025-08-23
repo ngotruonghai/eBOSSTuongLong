@@ -5,8 +5,12 @@ class HostService{
    static bool get OnOffSongNgu{
       return true; 
    }
-} 
-// http://192.168.1.17:8090
+}
+class MobileVersion{
+  static String get VersionApp{
+    return "1.1.3";
+  }
+}
 
 // https://eboss.vn:83 production
 // https://eboss.vn:93 dev
