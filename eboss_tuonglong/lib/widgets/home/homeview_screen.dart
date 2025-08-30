@@ -1,10 +1,13 @@
+import 'package:app_badge_plus/app_badge_plus.dart';
 import 'package:eboss_tuonglong/Access/keyservices.dart';
 import 'package:eboss_tuonglong/Access/mobilelanguageprovider.dart';
 import 'package:eboss_tuonglong/Access/sharedpreferencesservice.dart';
 import 'package:eboss_tuonglong/common/LanguageText.dart';
+import 'package:eboss_tuonglong/services/NotificationService.dart';
 import 'package:eboss_tuonglong/widgets/GiaoHangMau/danhsachphieugiaohangmau_widgets.dart';
 import 'package:eboss_tuonglong/widgets/Notification/notication_wiget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeViewScreen extends StatefulWidget {
   const HomeViewScreen({super.key});
@@ -101,6 +104,7 @@ class _HomeViewScreenState extends State<HomeViewScreen> {
                                   ),
                                   child: InkWell(
                                     onTap: () {
+                                      NotificationService.resetBadge();
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -115,6 +119,11 @@ class _HomeViewScreenState extends State<HomeViewScreen> {
                                     ),
                                   ),
                                 ),
+
+
+
+
+
                               ],
                             ),
                           ],

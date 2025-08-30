@@ -164,7 +164,7 @@ class _UserInfoScreen extends State<UserInfoScreen> {
 
             SizedBox(height: screenWidth * 0.04),
             
-            Padding(padding: EdgeInsetsGeometry.only(left: 20),
+            Padding(padding: EdgeInsets.only(left: 20),
             child: Row(
               children: [
                 Icon(Icons.logout),

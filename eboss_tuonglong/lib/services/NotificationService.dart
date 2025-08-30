@@ -1,6 +1,6 @@
+import 'package:app_badge_plus/app_badge_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // QUAN TRỌNG: Hàm này phải là một top-level function (nằm ngoài bất kỳ class nào)
@@ -11,6 +11,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // Nếu bạn cần khởi tạo các dịch vụ khác ở đây (như authentication, analytics),
   // hãy chắc chắn gọi `Firebase.initializeApp()` trước khi sử dụng chúng.
   await Firebase.initializeApp();
+  await NotificationService.increaseBadge();
 
   print("Handling a background message: ${message.messageId}");
   // Tại đây, bạn có thể thực hiện các tác vụ nền như cập nhật dữ liệu,
@@ -20,26 +21,23 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 class NotificationService {
   // Singleton pattern để đảm bảo chỉ có một instance của service
   static final NotificationService _instance = NotificationService._internal();
+
   factory NotificationService() => _instance;
   static String FCMToken = "";
 
   NotificationService._internal();
 
-  static final FirebaseMessaging _firebaseMessaging =
-      FirebaseMessaging.instance;
-  static final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  static final FlutterLocalNotificationsPlugin _localNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   /// Kênh thông báo cho Android.
   /// Bắt buộc phải có từ Android 8.0 trở lên.
-  static final AndroidNotificationChannel _androidChannel =
-      const AndroidNotificationChannel(
-        'high_importance_channel', // id
-        'High Importance Notifications', // title
-        description:
-            'Kênh này dùng cho các thông báo quan trọng.', // description
-        importance: Importance.max,
-      );
+  static final AndroidNotificationChannel _androidChannel = const AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    description: 'Kênh này dùng cho các thông báo quan trọng.', // description
+    importance: Importance.max,
+  );
 
   /// Hàm khởi tạo chính, cần được gọi trong main.dart
   static Future<void> init() async {
@@ -79,8 +77,7 @@ class NotificationService {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('Người dùng đã cấp quyền');
-    } else if (settings.authorizationStatus ==
-        AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
       print('Người dùng đã cấp quyền tạm thời');
     } else {
       print('Người dùng từ chối hoặc chưa cấp quyền');
@@ -90,19 +87,16 @@ class NotificationService {
   /// Khởi tạo FlutterLocalNotificationsPlugin
   static Future<void> _initLocalNotifications() async {
     // Cài đặt cho Android
-    const AndroidInitializationSettings androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const AndroidInitializationSettings androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
 
     // Cài đặt cho iOS
-    const DarwinInitializationSettings iosSettings =
-        DarwinInitializationSettings(
-          requestAlertPermission: true,
-          requestBadgePermission: true,
-          requestSoundPermission: true,
-        );
+    const DarwinInitializationSettings iosSettings = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+    );
 
-    const InitializationSettings initializationSettings =
-        InitializationSettings(android: androidSettings, iOS: iosSettings);
+    const InitializationSettings initializationSettings = InitializationSettings(android: androidSettings, iOS: iosSettings);
 
     await _localNotificationsPlugin.initialize(
       initializationSettings,
@@ -114,19 +108,19 @@ class NotificationService {
     );
 
     // Tạo kênh thông báo cho Android
-    await _localNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >()
-        ?.createNotificationChannel(_androidChannel);
+    await _localNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(
+      _androidChannel,
+    );
   }
 
   /// Cài đặt các trình lắng nghe sự kiện của Firebase Messaging
   static Future<void> _setupFirebaseListeners() async {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
       print('Message notification: ${message.notification}');
+
+      await increaseBadge();
 
       String? title = message.notification?.title ?? message.data['title'];
       String? body = message.notification?.body ?? message.data['body'];
@@ -144,11 +138,7 @@ class NotificationService {
               priority: Priority.high,
               icon: '@mipmap/ic_launcher',
             ),
-            iOS: DarwinNotificationDetails(
-              presentAlert: true,
-              presentBadge: true,
-              presentSound: true,
-            ),
+            iOS: DarwinNotificationDetails(presentAlert: true, presentBadge: true, presentSound: true),
           ),
         );
       } else {
@@ -157,16 +147,34 @@ class NotificationService {
     });
   }
 
+  // Background/terminated message
+  static Future<void> firebaseMessagingBackground(RemoteMessage message) async {
+    await Firebase.initializeApp();
+    await increaseBadge();
+  }
+
   /// Hàm để kiểm tra và xử lý thông báo đã mở ứng dụng từ trạng thái terminated
   static Future<void> checkForInitialMessage() async {
-    RemoteMessage? initialMessage =
-        await _firebaseMessaging.getInitialMessage();
+    RemoteMessage? initialMessage = await _firebaseMessaging.getInitialMessage();
 
     if (initialMessage != null) {
       print('App opened from terminated state by a notification!');
       print('Initial message data: ${initialMessage.data}');
       // Xử lý logic điều hướng tại đây
     }
+  }
+
+  static int badgeCount = 0;
+
+  static Future<void> increaseBadge() async {
+    badgeCount += 1;
+    await AppBadgePlus.updateBadge(badgeCount);
+    print("APP LOG CHECK $badgeCount");
+  }
+
+  static Future<void> resetBadge() async {
+    badgeCount = 0;
+    await AppBadgePlus.updateBadge(0);
   }
 }
 

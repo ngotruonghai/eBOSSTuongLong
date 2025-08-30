@@ -1,25 +1,29 @@
+import 'dart:async';
+
+import 'package:app_badge_plus/app_badge_plus.dart';
 import 'package:eboss_tuonglong/services/NotificationService.dart';
 import 'package:eboss_tuonglong/widgets/login/login_screen.dart';
-import 'package:eboss_tuonglong/widgets/test/testsrceen_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
- // Bắt buộc phải có cho async trong main
+  // Bắt buộc phải có cho async trong main
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await FirebaseMessaging.instance.requestPermission(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+  await FirebaseMessaging.instance.requestPermission(alert: true, badge: true, sound: true);
+  WidgetsFlutterBinding.ensureInitialized();
+
   await NotificationService.init();
   await NotificationService.getFCMToken();
   // Kiểm tra nếu app được mở từ 1 notification khi bị terminate
   await NotificationService.checkForInitialMessage();
-   await initializeDateFormatting('vi', null); // <-- ĐÂY là phần bạn thiếu
+  await initializeDateFormatting('vi', null); // <-- ĐÂY là phần bạn thiếu
+
+  FirebaseMessaging.onBackgroundMessage(NotificationService.firebaseMessagingBackground);
+
   runApp(const MyApp());
 }
 
@@ -125,13 +129,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            const Text('You have pushed the button this many times:'),
+            Text('$_counter', style: Theme.of(context).textTheme.headlineMedium),
           ],
         ),
       ),

@@ -1,6 +1,6 @@
 class HostService{
    static String get Host_Mobile{
-     return "http://10.0.2.2:7275";
+     return "https://eboss.vn:83";
    }
    static bool get OnOffSongNgu{
       return true; 
@@ -8,10 +8,17 @@ class HostService{
 }
 class MobileVersion{
   static String get VersionApp{
-    return "1.1.3";
+    return "1.1.4";
   }
 }
 
-// https://eboss.vn:83 production
-// https://eboss.vn:93 dev
-//http://10.0.2.2:7275 Localhost Android Emulator
+/*
+Production
+https://eboss.vn:83
+
+Dev
+https://eboss.vn:93
+
+Localhost Android Emulato
+http://10.0.2.2:7275
+*/
