@@ -1,9 +1,9 @@
 import 'package:eboss_tuonglong/Access/mobilelanguageprovider.dart';
 import 'package:eboss_tuonglong/common/LanguageText.dart';
+import 'package:eboss_tuonglong/model/TienDoXuLyMau/chiTietNhapKhoHangMau_model.dart' as chiTietKhoHang;
 import 'package:eboss_tuonglong/model/TienDoXuLyMau/chitietgiaohangmau.dart';
 import 'package:eboss_tuonglong/services/NetWorkRequest.dart';
 import 'package:flutter/material.dart';
-import 'package:eboss_tuonglong/Access/functionApp.dart';
 
 class ChiTietTienDoXuLyMauScreen extends StatefulWidget {
   final String id;
@@ -16,172 +16,362 @@ class ChiTietTienDoXuLyMauScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ChiTietTienDoXuLyMauScreen> createState() =>
-      _ChiTietTienDoXuLyMauScreen();
+  State<ChiTietTienDoXuLyMauScreen> createState() => _ChiTietTienDoXuLyMauScreenState();
 }
 
-class _ChiTietTienDoXuLyMauScreen
-    extends State<ChiTietTienDoXuLyMauScreen> {
-  late List<Data> lsdanhsachchitietgiaohangmau = [];
+class _ChiTietTienDoXuLyMauScreenState extends State<ChiTietTienDoXuLyMauScreen> {
+  List<Data> lsdanhsachchitietgiaohangmau = [];
+  List<chiTietKhoHang.Data> lsChiTietKhoHang = [];
+  bool isLoading = false;
 
-  Future<int> API_LoadChiTiet(BuildContext context) async {
-    final response = await NetWorkRequest.GetDefault(
-      "/api/SalesDeliverySampleProgress/ChiTietTheoDoiTienDoXuLyMau/ProcessAID=" +
-          widget.processAID,
-      context,
-    );
-    final parsedResponse = ChiTietGiaoHangMauModel.fromJson(response);
-    lsdanhsachchitietgiaohangmau = parsedResponse.data ?? [];
-    return 1;
-  }
+  // Define fixed column widths
+  static const Map<int, TableColumnWidth> _deliveryColumnWidths = {
+    0: FixedColumnWidth(120), // Số phiếu
+    1: FixedColumnWidth(120), // Ngày ghi nhận
+    2: FixedColumnWidth(120), // Mã sản phẩm
+    3: FixedColumnWidth(180), // Tên sản phẩm (wider for longer names)
+    4: FixedColumnWidth(100), // Đẳng cấp
+    5: FixedColumnWidth(100), // Đơn vị tính
+    6: FixedColumnWidth(80),  // SL
+    7: FixedColumnWidth(120), // ĐVT (Giao dịch)
+    8: FixedColumnWidth(100), // SL (Giao dịch)
+    9: FixedColumnWidth(150), // Ghi chú
+  };
 
-  Future<bool> loadData(BuildContext context) async {
-    try {
-      await API_LoadChiTiet(context);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
+  static const Map<int, TableColumnWidth> _warehouseColumnWidths = {
+    0: FixedColumnWidth(120), // Mã kho
+    1: FixedColumnWidth(120), // Ngày ghi nhận
+    2: FixedColumnWidth(150), // Mô tả
+    3: FixedColumnWidth(120), // Mã sản phẩm
+    4: FixedColumnWidth(180), // Tên sản phẩm
+    5: FixedColumnWidth(100), // Loại SP
+    6: FixedColumnWidth(80),  // Đơn vị
+    7: FixedColumnWidth(100), // Số lượng
+    8: FixedColumnWidth(150), // Ghi chú
+    9: FixedColumnWidth(120), // Process ID
+  };
 
-  Future<void> _refreshData() async {
-    await loadData(context);
-    setState(() {});
+  @override
+  void initState() {
+    super.initState();
+    loadData();
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 1, // Số lượng tab
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF1F615C),
-          title: LanguageText(nameId: "ChiTietGiaoHangMau", defaultValue: "Chi tiết giao hàng mẫu"),
-          titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+          backgroundColor: const Color(0xFF1F615C),
+          foregroundColor: Colors.white,
+          title: const LanguageText(
+              nameId: "ChiTietGiaoHangMau",
+              defaultValue: "Chi tiết tiến độ xử lý mẫu"
+          ),
+          titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
+          bottom: TabBar(
+            indicatorColor: Colors.white,
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white70,
+            tabs: [
+              Tab(
+                  text: LoadAppMobileLanguage.GetStringLanguage(
+                      "ChiTietYeuCau",
+                      NameDefault: "Giao hàng mẫu"
+                  )
+              ),
+              Tab(
+                text: LoadAppMobileLanguage.GetStringLanguage(
+                  "chitietnhapkho",
+                  NameDefault: "Nhập kho hàng mẫu nội bộ",
+                ),
+              ),
+            ],
+          ),
         ),
         body: RefreshIndicator(
           onRefresh: _refreshData,
-          child: FutureBuilder<bool>(
-            future: loadData(context),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(color: Color(0xFF1F615C)),
-                );
-              } else {
-                return _buildChiTiet();
-              }
-            },
+          child: isLoading
+              ? const Center(
+              child: CircularProgressIndicator(color: Color(0xFF1F615C))
+          )
+              : TabBarView(
+              children: [
+                _buildChiTiet(),
+                _buildChiTietKhoHang(),
+              ]
           ),
         ),
       ),
     );
   }
 
-  // Tab "Chi tiết"
   Widget _buildChiTiet() {
-  return SingleChildScrollView(
-    scrollDirection: Axis.vertical,
-    child: SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Table(
-        border: TableBorder.all(),
-        columnWidths: {
-          0: FixedColumnWidth(120),
-          1: FixedColumnWidth(120),
-          2: FixedColumnWidth(120),
-          3: FixedColumnWidth(120),
-          4: FixedColumnWidth(120),
-          5: FixedColumnWidth(80),
-          6: FixedColumnWidth(80),
-          7: FixedColumnWidth(120),
-          8: FixedColumnWidth(120),
-          9: FixedColumnWidth(120),
-        },
-        children: [
-          _buildTableHeader(),
-          if (lsdanhsachchitietgiaohangmau.isEmpty)
-            TableRow(
-              children: [
-                TableCell(
-                  // colspan không hỗ trợ trực tiếp, dùng 1 ô và bỏ border các ô còn lại nếu muốn đẹp hơn
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Center(
-                      child: LanguageText(nameId: "nodata", defaultValue: "Không có dữ liệu", style: TextStyle(fontSize: 16, color: Colors.grey))
-                    ),
-                  ),    
-                ),
-                for (int i = 0; i < 9; i++)
-                  SizedBox.shrink(),
-              ],
-            ),
-          for (var item in lsdanhsachchitietgiaohangmau)
-            _buildTableRow(item),
-        ],
-      ),
-    ),
-  );
-}
-
-  // Tiêu đề bảng
-  TableRow _buildTableHeader() {
-    return TableRow(
-      decoration: BoxDecoration(color: Colors.grey[300]),
-      children: [
-        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("VoucherID", NameDefault: "Số phiếu"), isHeader: true),
-        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("13", NameDefault: "Ngày ghi nhận"), isHeader: true),
-        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("masanpham", NameDefault: "Mã sản phẩm"), isHeader: true),
-        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("tensanpham", NameDefault: "Tên sản phẩm"), isHeader: true),
-        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("ProductType", NameDefault: "Đẳng cấp"), isHeader: true),
-        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("donvitinh", NameDefault: "Đơn vị tính"), isHeader: true),
-        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("soluong", NameDefault: "SL"), isHeader: true),
-        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("dvtgiaodich", NameDefault: "ĐVT (Giao dịch)"), isHeader: true),
-        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("slgiaodich", NameDefault: "SL (Giao dịch)"), isHeader: true),
-        _buildTableCell(LoadAppMobileLanguage.GetStringLanguage("ghichu", NameDefault: "Ghi chú"), isHeader: true),
-      ],
-    );
-  }
-
-  // Hàng dữ liệu
-  TableRow _buildTableRow(Data item) {
-    return TableRow(
-      children: [
-        _buildTableCell(item.deliveryID??""),
-        _buildTableCell(item.recordDate??""),
-        _buildTableCell(item.productID??""),
-        _buildTableCell(item.productName??""),
-        _buildTableCell(item.productTypeName??""),
-        _buildTableCell(item.unitName??""),
-        _buildTableCell(item.qty??""),
-        _buildTableCell(item.dealUnitName??""),
-        _buildTableCell(item.dealQty??""),
-        _buildTableCell(item.remark??""),
-      ],
-    );
-  }
-
-  // Ô trong bảng
-  Widget _buildTableCell(String? text, {bool isHeader = false}) {
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Text(
-        text ?? "",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
-          fontSize: 14,
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Table(
+          border: TableBorder.all(color: Colors.grey),
+          columnWidths: _deliveryColumnWidths,
+          children: [
+            _buildDeliveryTableHeader(),
+            if (lsdanhsachchitietgiaohangmau.isEmpty)
+              _buildNoDataTableRow(_deliveryColumnWidths.length),
+            ...lsdanhsachchitietgiaohangmau.map((item) => _buildDeliveryTableRow(item)),
+          ],
         ),
       ),
     );
   }
 
-  // Hàm tạo TextField chỉ đọc và tự động xuống dòng
-  Widget _buildReadOnlyTextField(
-    String label,
-    TextEditingController controller,
-    bool readOnly,
-  ) {
+  Widget _buildChiTietKhoHang() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Table(
+          border: TableBorder.all(color: Colors.grey),
+          columnWidths: _warehouseColumnWidths,
+          children: [
+            _buildWarehouseTableHeader(),
+            if (lsChiTietKhoHang.isEmpty)
+              _buildNoDataTableRow(_warehouseColumnWidths.length),
+            ...lsChiTietKhoHang.map((item) => _buildWarehouseTableRow(item)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  TableRow _buildDeliveryTableHeader() {
+    return TableRow(
+      decoration: BoxDecoration(color: Colors.grey[300]),
+      children: [
+        _buildTableCell(
+            LoadAppMobileLanguage.GetStringLanguage("VoucherID", NameDefault: "Số phiếu"),
+            isHeader: true
+        ),
+        _buildTableCell(
+            LoadAppMobileLanguage.GetStringLanguage("13", NameDefault: "Ngày ghi nhận"),
+            isHeader: true
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("masanpham", NameDefault: "Mã sản phẩm"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("tensanpham", NameDefault: "Tên sản phẩm"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("ProductType", NameDefault: "Đẳng cấp"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("donvitinh", NameDefault: "Đơn vị tính"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+            LoadAppMobileLanguage.GetStringLanguage("soluong", NameDefault: "SL"),
+            isHeader: true
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("dvtgiaodich", NameDefault: "ĐVT (Giao dịch)"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("slgiaodich", NameDefault: "SL (Giao dịch)"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+            LoadAppMobileLanguage.GetStringLanguage("ghichu", NameDefault: "Ghi chú"),
+            isHeader: true
+        ),
+      ],
+    );
+  }
+
+  TableRow _buildWarehouseTableHeader() {
+    return TableRow(
+      decoration: BoxDecoration(color: Colors.grey[300]),
+      children: [
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("VoucherID", NameDefault: "Số phiếu"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("13", NameDefault: "Ngày ghi nhận"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("DienGiai", NameDefault: "Diễn giải"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("masanpham", NameDefault: "Mã sản phẩm"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("tensanpham", NameDefault: "Tên sản phẩm"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("ProductType", NameDefault: "Đẳng cấp"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("donvitinh", NameDefault: "Đơn vị tính"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("soluong", NameDefault: "Số lượng"),
+          isHeader: true,
+        ),
+        _buildTableCell(
+          LoadAppMobileLanguage.GetStringLanguage("ghichu", NameDefault: "Ghi chú"),
+          isHeader: true,
+        ),
+      ],
+    );
+  }
+
+  TableRow _buildDeliveryTableRow(Data item) {
+    return TableRow(
+      children: [
+        _buildTableCell(item.deliveryID ?? ""),
+        _buildTableCell(item.recordDate ?? ""),
+        _buildTableCell(item.productID ?? ""),
+        _buildTableCell(item.productName ?? ""),
+        _buildTableCell(item.productTypeName ?? ""),
+        _buildTableCell(item.unitName ?? ""),
+        _buildTableCell(item.qty ?? ""),
+        _buildTableCell(item.dealUnitName ?? ""),
+        _buildTableCell(item.dealQty ?? ""),
+        _buildTableCell(item.remark ?? ""),
+      ],
+    );
+  }
+
+  TableRow _buildWarehouseTableRow(chiTietKhoHang.Data item) {
+    return TableRow(
+      children: [
+        _buildTableCell(item.stockID ?? ""),
+        _buildTableCell(item.recordDate ?? ""),
+        _buildTableCell(item.description ?? ""),
+        _buildTableCell(item.productID ?? ""),
+        _buildTableCell(item.productName ?? ""),
+        _buildTableCell(item.productType ?? ""),
+        _buildTableCell(item.unitName ?? ""),
+        _buildTableCell(item.qty ?? ""),
+        _buildTableCell(item.remark ?? ""),
+      ],
+    );
+  }
+
+  TableRow _buildNoDataTableRow(int columnCount) {
+    return TableRow(
+      children: [
+        TableCell(
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            child: const Center(
+              child: LanguageText(
+                nameId: "nodata",
+                defaultValue: "Không có dữ liệu",
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+            ),
+          ),
+        ),
+        for (int i = 1; i < columnCount; i++)
+          const TableCell(child: SizedBox.shrink()),
+      ],
+    );
+  }
+
+  Widget _buildTableCell(String? text, {bool isHeader = false}) {
+    return TableCell(
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          text ?? "",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+              fontSize: 14
+          ),
+          // Cho phép text wrap trong fixed width columns
+          overflow: TextOverflow.visible,
+          softWrap: true,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _loadChiTietGiaoHang() async {
+    try {
+      final response = await NetWorkRequest.GetDefault(
+        "/api/SalesDeliverySampleProgress/ChiTietTheoDoiTienDoXuLyMau/ProcessAID=${widget.processAID}",
+        context,
+      );
+      final parsedResponse = ChiTietGiaoHangMauModel.fromJson(response);
+      lsdanhsachchitietgiaohangmau = parsedResponse.data ?? [];
+    } catch (e) {
+      debugPrint('Error loading chi tiet giao hang: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Lỗi khi tải dữ liệu giao hàng')),
+        );
+      }
+    }
+  }
+
+  Future<void> _loadChiTietKhoHang() async {
+    try {
+      final response = await NetWorkRequest.GetDefault(
+        "/api/SalesDeliverySampleProgress/ChiTietNhapKho/${widget.processAID}",
+        context,
+      );
+      final parsedResponse = chiTietKhoHang.ChiTietNhapKhoHangMauModel.fromJson(response);
+      lsChiTietKhoHang = parsedResponse.data ?? [];
+    } catch (e) {
+      debugPrint('Error loading chi tiet kho hang: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Lỗi khi tải dữ liệu kho hàng')),
+        );
+      }
+    }
+  }
+
+  Future<void> loadData() async {
+    if (!mounted) return;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      await Future.wait([
+        _loadChiTietGiaoHang(),
+        _loadChiTietKhoHang(),
+      ]);
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _refreshData() async {
+    await loadData();
+  }
+
+  Widget _buildReadOnlyTextField(String label, TextEditingController controller, bool readOnly) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: TextFormField(
@@ -190,8 +380,8 @@ class _ChiTietTienDoXuLyMauScreen
         maxLines: null,
         keyboardType: TextInputType.multiline,
         decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
+            labelText: label,
+            border: const OutlineInputBorder()
         ),
       ),
     );

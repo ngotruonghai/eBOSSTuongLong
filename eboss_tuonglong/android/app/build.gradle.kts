@@ -35,8 +35,8 @@ android {
         applicationId = "com.eboss.tuonglongs"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        versionCode = 20
+        versionName = "1.1.5"
     }
     signingConfigs {
         create("release") {

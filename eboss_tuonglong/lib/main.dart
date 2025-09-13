@@ -25,6 +25,8 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(NotificationService.firebaseMessagingBackground);
 
   runApp(const MyApp());
+
+  NotificationService.resetBadge();
 }
 
 class MyApp extends StatelessWidget {

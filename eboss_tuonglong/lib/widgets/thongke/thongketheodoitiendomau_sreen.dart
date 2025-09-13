@@ -1,5 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:eboss_tuonglong/common/LanguageText.dart';
+import 'package:eboss_tuonglong/helper/calendar/calendar_picker.dart';
 import 'package:eboss_tuonglong/provider/theodoitiendomauprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,12 +11,10 @@ class ThongketheodoitiendomauSreen extends StatefulWidget {
   const ThongketheodoitiendomauSreen({super.key});
 
   @override
-  State<ThongketheodoitiendomauSreen> createState() =>
-      _ThongketheodoitiendomauSreenState();
+  State<ThongketheodoitiendomauSreen> createState() => _ThongketheodoitiendomauSreenState();
 }
 
-class _ThongketheodoitiendomauSreenState
-    extends State<ThongketheodoitiendomauSreen>
+class _ThongketheodoitiendomauSreenState extends State<ThongketheodoitiendomauSreen>
     with SingleTickerProviderStateMixin {
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
   DateTime _selectFormDate = DateTime.now();
@@ -42,82 +41,71 @@ class _ThongketheodoitiendomauSreenState
     return ChangeNotifierProvider(
       create: (_) {
         final provider = TheoDoiTienDoMauProvider();
-        provider.LoadDanhSachTheoDoiTienDo(context, 
+        provider.LoadDanhSachTheoDoiTienDo(
+          context,
           _dateFormat.format(_selectFormDate),
-          _dateFormat.format(_selectToDate), 
-          '', '', '');
+          _dateFormat.format(_selectToDate),
+          '',
+          '',
+          '',
+        );
         return provider;
       },
       builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
-            title: LanguageText(
-              nameId: "theodoitiendomau",
-              defaultValue: "Theo dõi tiến độ mẫu",
-            ),
+            title: LanguageText(nameId: "theodoitiendomau", defaultValue: "Theo dõi tiến độ mẫu"),
             backgroundColor: const Color(0xFF225F59),
           ),
           body: Consumer<TheoDoiTienDoMauProvider>(
-            builder: (context, theodoitiendomauprovider, _)  {
+            builder: (context, theodoitiendomauprovider, _) {
               if (theodoitiendomauprovider.isLoading) {
                 return const Center(child: CircularProgressIndicator());
               }
               if (theodoitiendomauprovider.items.isEmpty) {
                 return const Center(
-                  child: Text(
-                    "Không có dữ liệu",
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
-                  ),
+                  child: Text("Không có dữ liệu", style: TextStyle(fontSize: 18, color: Colors.grey)),
                 );
               }
               return RefreshIndicator(
-                 onRefresh:
-                    () =>
-                        theodoitiendomauprovider.LoadDanhSachTheoDoiTienDo(
-                          context,
-                          _dateFormat.format(_selectFormDate),
-                          _dateFormat.format(_selectToDate),
-                          "",
-                          "",""
-                        ),
+                onRefresh:
+                    () => theodoitiendomauprovider.LoadDanhSachTheoDoiTienDo(
+                      context,
+                      _dateFormat.format(_selectFormDate),
+                      _dateFormat.format(_selectToDate),
+                      "",
+                      "",
+                      "",
+                    ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Padding(padding: const EdgeInsets.only(bottom: 24),
-                  child:  SizedBox(
-                     width: 1700,
-                     child: DataTable2(
-                        showCheckboxColumn:
-                            false, // Thêm dòng này để ẩn checkbox
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 24),
+                    child: SizedBox(
+                      width: 1700,
+                      child: DataTable2(
+                        showCheckboxColumn: false,
+                        // Thêm dòng này để ẩn checkbox
                         fixedTopRows: 1,
-                        headingRowColor: MaterialStateProperty.all(
-                          const Color(0xFF225F59),
-                        ),
+                        headingRowColor: WidgetStateProperty.all(const Color(0xFF225F59)),
                         columnSpacing: 8,
                         horizontalMargin: 8,
-                        headingTextStyle: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        headingTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                         columns: [
                           DataColumn2(
-                            label: Center(
-                              child: Text('${theodoitiendomauprovider.items.length}'),
-                            ),
+                            label: Center(child: Text('${theodoitiendomauprovider.items.length}')),
                             fixedWidth: 50,
                           ),
                           const DataColumn2(
-                            label: LanguageText(nameId: "24", defaultValue: "Phiếu yêu cầu",
-                            ),
+                            label: LanguageText(nameId: "24", defaultValue: "Phiếu yêu cầu"),
                             size: ColumnSize.L,
                           ),
                           const DataColumn2(
-                            label: LanguageText(nameId: "13", defaultValue: "Ngày ghi nhận",
-                            ),
+                            label: LanguageText(nameId: "13", defaultValue: "Ngày ghi nhận"),
                             size: ColumnSize.L,
                           ),
                           const DataColumn2(
-                            label: LanguageText(nameId: "madonhang", defaultValue: "Mã đơn hàng",
-                            ),
+                            label: LanguageText(nameId: "madonhang", defaultValue: "Mã đơn hàng"),
                             size: ColumnSize.L,
                           ),
                           const DataColumn2(
@@ -128,7 +116,7 @@ class _ThongketheodoitiendomauSreenState
                             label: LanguageText(nameId: "16", defaultValue: "Nhân viên kinh doanh"),
                             size: ColumnSize.L,
                           ),
-                           const DataColumn2(
+                          const DataColumn2(
                             label: LanguageText(nameId: "YarnDate", defaultValue: "Ngày có sợi"),
                             size: ColumnSize.L,
                           ),
@@ -140,11 +128,11 @@ class _ThongketheodoitiendomauSreenState
                             label: LanguageText(nameId: "NgayCoVaiThanhPham", defaultValue: "Ngày có vải thành phẩm"),
                             size: ColumnSize.L,
                           ),
-                           const DataColumn2(
+                          const DataColumn2(
                             label: LanguageText(nameId: "NgayCoKetQuaTest", defaultValue: "Ngày có kết quả test"),
                             size: ColumnSize.L,
                           ),
-                           const DataColumn2(
+                          const DataColumn2(
                             label: LanguageText(nameId: "NgayCoHanger", defaultValue: "Ngày có hanger"),
                             size: ColumnSize.L,
                           ),
@@ -164,65 +152,23 @@ class _ThongketheodoitiendomauSreenState
                               }
 
                               return DataRow(
-                                
                                 cells: [
                                   DataCell(Center(child: Text('${index + 1}'))), // STT
-                                  DataCell(
-                                    Text(
-                                      item.sampleID ?? '',
-                                    ),
-                                  ),
-                                  DataCell(
-                                    Text(
-                                      item.recordDate ?? '',
-                                    ),
-                                  ),
-                                  DataCell(
-                                    Text(
-                                      item.maDonHang ?? '',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  DataCell(
-                                    Text(
-                                      item.ngayCoSoi ?? '',
-                                    ),
-                                  ),
+                                  DataCell(Text(item.sampleID ?? '')),
+                                  DataCell(Text(item.recordDate ?? '')),
+                                  DataCell(Text(item.maDonHang ?? '', style: TextStyle(fontWeight: FontWeight.bold))),
+                                  DataCell(Text(item.ngayCoSoi ?? '')),
                                   DataCell(
                                     Align(
                                       alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        item.tenKhachHang.toString().trim() ?? '',
-                                      ),
+                                      child: Text(item.tenKhachHang.toString().trim()),
                                     ),
                                   ),
-                                  DataCell(
-                                    Text(
-                                      item.nhanVienKinhDoanh??"".toString().trim() ?? '',
-                                    ),
-                                  ),
-                                  DataCell(
-                                    Text(
-                                      item.ngayCoVaiMoc ?? '',
-                                    ),
-                                  ),
-                                   DataCell(
-                                    Text(
-                                      item.ngayCoVaiThanhPhan ?? '',
-                                    ),
-                                  ),
-                                  DataCell(
-                                    Text(
-                                      item.ngayCoKetQuaTest ?? '',
-                                    ),
-                                  ),
-                                  DataCell(
-                                    Text(
-                                      item.ngayCoHanger ?? '',
-                                    ),
-                                  ),
+                                  DataCell(Text(item.nhanVienKinhDoanh ?? "".toString().trim())),
+                                  DataCell(Text(item.ngayCoVaiMoc ?? '')),
+                                  DataCell(Text(item.ngayCoVaiThanhPhan ?? '')),
+                                  DataCell(Text(item.ngayCoKetQuaTest ?? '')),
+                                  DataCell(Text(item.ngayCoHanger ?? '')),
                                   DataCell(
                                     GestureDetector(
                                       onTap: () {
@@ -232,24 +178,19 @@ class _ThongketheodoitiendomauSreenState
                                               (context) => AlertDialog(
                                                 title: const LanguageText(
                                                   nameId: "NhanXetHangNhapKho",
-                                                  defaultValue:
-                                                      "Nhận xét hàng nhập kho",
+                                                  defaultValue: "Nhận xét hàng nhập kho",
                                                 ),
                                                 content: SingleChildScrollView(
-                                                  child: Text(
-                                                    item.nhanXetHangNhapKho
-                                                            ?.toString() ??
-                                                        '',
-                                                  ),
+                                                  child: Text(item.nhanXetHangNhapKho?.toString() ?? ''),
                                                 ),
                                                 actions: [
                                                   TextButton(
-                                                    onPressed:
-                                                        () => Navigator.pop(
-                                                          context,
-                                                        ),
-                                                    child: LanguageText(nameId: "dong", defaultValue: "Đóng",
-                                                    style: TextStyle(fontSize: 13, color: Colors.black),),
+                                                    onPressed: () => Navigator.pop(context),
+                                                    child: LanguageText(
+                                                      nameId: "dong",
+                                                      defaultValue: "Đóng",
+                                                      style: TextStyle(fontSize: 13, color: Colors.black),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -260,11 +201,8 @@ class _ThongketheodoitiendomauSreenState
                                         child: Text(
                                           item.nhanXetHangNhapKho?.toString() ?? '',
                                           // <<< SỬA Ở ĐÂY
-                                          maxLines:
-                                              2, // Chỉ hiển thị tối đa 2 dòng
-                                          overflow:
-                                              TextOverflow
-                                                  .ellipsis,
+                                          maxLines: 2, // Chỉ hiển thị tối đa 2 dòng
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ),
@@ -273,8 +211,9 @@ class _ThongketheodoitiendomauSreenState
                               );
                             }).toList(),
                       ),
-                  )),
-                )
+                    ),
+                  ),
+                ),
               );
             },
           ),
@@ -286,26 +225,24 @@ class _ThongketheodoitiendomauSreenState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     LanguageText(
-                nameId: "tenkhachhang",
-                defaultValue: "Tên khách hàng",
-                style: const TextStyle(fontSize: 13, color: Colors.black),
-              ),
+                      nameId: "tenkhachhang",
+                      defaultValue: "Tên khách hàng",
+                      style: const TextStyle(fontSize: 13, color: Colors.black),
+                    ),
+                    SizedBox(height: 4),
                     TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
+                      decoration: const InputDecoration(border: OutlineInputBorder()),
                       controller: _tenkhachhang,
                     ),
                     SizedBox(height: 20),
-                    const  LanguageText(
-                nameId: "16",
-                defaultValue: "Nhân viên kinh doanh",
-                style: const TextStyle(fontSize: 13, color: Colors.black),
-              ),
+                    const LanguageText(
+                      nameId: "16",
+                      defaultValue: "Nhân viên kinh doanh",
+                      style: const TextStyle(fontSize: 13, color: Colors.black),
+                    ),
+                    SizedBox(height: 4),
                     TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
+                      decoration: const InputDecoration(border: OutlineInputBorder()),
                       controller: _nhanvienkinhoanh,
                     ),
                     SizedBox(height: 20),
@@ -314,18 +251,15 @@ class _ThongketheodoitiendomauSreenState
                       defaultValue: "Mã đơn hàng",
                       style: TextStyle(fontSize: 13, color: Colors.black),
                     ),
-                    TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
-                      controller: _refOrderID,
-                    ),
+                    SizedBox(height: 4),
+                    TextField(decoration: const InputDecoration(border: OutlineInputBorder()), controller: _refOrderID),
                     const SizedBox(height: 20),
                     const LanguageText(
                       nameId: "34",
                       defaultValue: "Từ ngày",
                       style: TextStyle(fontSize: 13, color: Colors.black),
                     ),
+                    SizedBox(height: 4),
                     InkWell(
                       onTap: () {
                         _showCalendarFormDatePopup(context);
@@ -335,11 +269,7 @@ class _ThongketheodoitiendomauSreenState
                           border: OutlineInputBorder(),
                           suffixIcon: Icon(Icons.calendar_today),
                         ),
-                        child: Text(
-                          _selectFormDate != null
-                              ? _dateFormat.format(_selectFormDate!)
-                              : "Chọn ngày",
-                        ),
+                        child: Text(_dateFormat.format(_selectFormDate)),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -348,42 +278,37 @@ class _ThongketheodoitiendomauSreenState
                       defaultValue: "Đến ngày",
                       style: TextStyle(fontSize: 13, color: Colors.black),
                     ),
+                    SizedBox(height: 4),
                     InkWell(
                       onTap: () {
-                        _showCalendarToDatePopup(context);
+                        _showCalendarFormDatePopup(context, isToDate: true);
                       },
                       child: InputDecorator(
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           suffixIcon: Icon(Icons.calendar_today),
                         ),
-                        child: Text(
-                          _selectToDate != null
-                              ? _dateFormat.format(_selectToDate!)
-                              : "Chọn ngày",
-                        ),
+                        child: Text(_dateFormat.format(_selectToDate)),
                       ),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        context
-                            .read<TheoDoiTienDoMauProvider>()
-                            .LoadDanhSachTheoDoiTienDo(
-                              context,
-                              _dateFormat.format(_selectFormDate),
-                              _dateFormat.format(_selectToDate),
-                              _refOrderID.text,
-                              _tenkhachhang.text,
-                              _nhanvienkinhoanh.text,
-                            );
+                        context.read<TheoDoiTienDoMauProvider>().LoadDanhSachTheoDoiTienDo(
+                          context,
+                          _dateFormat.format(_selectFormDate),
+                          _dateFormat.format(_selectToDate),
+                          _refOrderID.text,
+                          _tenkhachhang.text,
+                          _nhanvienkinhoanh.text,
+                        );
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF1F615C),
                         foregroundColor: Colors.white,
                       ),
-                      child: LanguageText(defaultValue: "Tìm kiếm", nameId: "32",),
+                      child: LanguageText(defaultValue: "Tìm kiếm", nameId: "32"),
                     ),
                   ],
                 ),
@@ -391,56 +316,33 @@ class _ThongketheodoitiendomauSreenState
             ),
           ),
         );
-      },      
+      },
     );
   }
-void _showCalendarFormDatePopup(BuildContext context) {
+
+  void _onDaySelect({required DateTime selectedDay, required DateTime focusedDay, bool isToDay = false}) {
+    setState(() {
+      isToDay == false ? _selectFormDate = selectedDay : _selectToDate = selectedDay;
+    });
+    Navigator.pop(context);
+  }
+
+  void _showCalendarFormDatePopup(BuildContext context, {bool isToDate = false}) {
+    DateTime firstDate = DateTime.utc(2010, 10, 16);
+    DateTime lastTime = DateTime.utc(2030, 3, 14);
     showDialog(
       context: context,
       builder:
           (context) => AlertDialog(
-            content: Container(
-              width: MediaQuery.of(context).size.width * 1,
+            content: SizedBox(
+              width: MediaQuery.of(context).size.width * 1.5,
               height: MediaQuery.of(context).size.height * 0.6,
-              child: TableCalendar(
-                focusedDay: _selectFormDate,
-                rowHeight: 32,
-                locale: "vi_VN",
-                //headerVisible: false,
-                //headerVisible: false,
-                headerStyle: HeaderStyle(
-                  formatButtonVisible: false, // Ẩn nút chuyển đổi định dạng
-                  titleTextStyle: TextStyle(
-                    color: Colors.white,
-                  ), // Màu chữ của tiêu đề
-                  decoration: BoxDecoration(
-                    color: Colors.blue, // Màu nền của header
-                  ),
-                ),
-                firstDay: DateTime.utc(2010, 10, 16),
-                lastDay: DateTime.utc(2030, 3, 14),
-                calendarStyle: CalendarStyle(
-                  selectedDecoration: BoxDecoration(
-                    color: Colors.blue, // Màu sắc khi ngày được chọn
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(5.0),
-                  ), // Ẩn các ngày ngoài phạm vi của tháng hiện tại
-                ),
-                calendarFormat: _calendarFormat,
-                availableCalendarFormats: {
-                  CalendarFormat.week:
-                      'Tuần', // Chỉ có định dạng "Week" (1 tuần)
-                  CalendarFormat.month: 'Tháng', // Định dạng "Month" (tháng)
-                },
+              child: CalendarPicker(
+                firstDay: firstDate,
+                lastDay: lastTime,
+                focusedDay: isToDate ? _selectToDate : _selectFormDate,
                 onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _selectFormDate = selectedDay;
-                  });
-                  Navigator.pop(context); // Đóng popup sau khi chọn ngày
-                  // Thêm bất kỳ xử lý nào bạn muốn sau khi chọn ngày ở đây
-                },
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectFormDate, day);
+                  _onDaySelect(selectedDay: selectedDay, focusedDay: focusedDay, isToDay: isToDate);
                 },
               ),
             ),
@@ -448,60 +350,114 @@ void _showCalendarFormDatePopup(BuildContext context) {
     );
   }
 
-  void _showCalendarToDatePopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            content: Container(
-              width: MediaQuery.of(context).size.width * 1.5,
-              height: MediaQuery.of(context).size.height * 0.6,
-              child: TableCalendar(
-                rowHeight: 32,
-                locale: "vi_VN",
-                focusedDay: _selectToDate,
-                firstDay: DateTime.utc(2010, 10, 16),
-                lastDay: DateTime.utc(2030, 3, 14),
-                calendarFormat: _calendarFormat,
-                calendarStyle: CalendarStyle(
-                  selectedDecoration: BoxDecoration(
-                    color: Colors.blue, // Màu sắc khi ngày được chọn
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(5.0),
-                  ), // Ẩn các ngày ngoài phạm vi của tháng hiện tại
-                ),
-                headerStyle: HeaderStyle(
-                  formatButtonVisible: false, // Ẩn nút chuyển đổi định dạng
-                  titleTextStyle: TextStyle(
-                    color: Colors.white,
-                  ), // Màu chữ của tiêu đề
-                  decoration: BoxDecoration(
-                    color: Colors.blue, // Màu nền của header
-                  ),
-                ),
-                availableCalendarFormats: {
-                  CalendarFormat.week:
-                      'Tuần', // Chỉ có định dạng "Week" (1 tuần)
-                  CalendarFormat.month: 'Tháng', // Định dạng "Month" (tháng)
-                },
-                onFormatChanged: (format) {
-                  setState(() {
-                    _calendarFormat = format;
-                  });
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _selectToDate = selectedDay;
-                  });
-                  Navigator.pop(context); // Đóng popup sau khi chọn ngày
-                  // Thêm bất kỳ xử lý nào bạn muốn sau khi chọn ngày ở đây
-                },
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectToDate, day);
-                },
-              ),
-            ),
-          ),
-    );
-  }
+  // void _showCalendarFormDatePopup(BuildContext context) {
+  //     showDialog(
+  //       context: context,
+  //       builder:
+  //           (context) => AlertDialog(
+  //             content: Container(
+  //               width: MediaQuery.of(context).size.width * 1,
+  //               height: MediaQuery.of(context).size.height * 0.6,
+  //               child: TableCalendar(
+  //                 focusedDay: _selectFormDate,
+  //                 rowHeight: 32,
+  //                 locale: "vi_VN",
+  //                 //headerVisible: false,
+  //                 //headerVisible: false,
+  //                 headerStyle: HeaderStyle(
+  //                   formatButtonVisible: false, // Ẩn nút chuyển đổi định dạng
+  //                   titleTextStyle: TextStyle(
+  //                     color: Colors.white,
+  //                   ), // Màu chữ của tiêu đề
+  //                   decoration: BoxDecoration(
+  //                     color: Colors.blue, // Màu nền của header
+  //                   ),
+  //                 ),
+  //                 firstDay: DateTime.utc(2010, 10, 16),
+  //                 lastDay: DateTime.utc(2030, 3, 14),
+  //                 calendarStyle: CalendarStyle(
+  //                   selectedDecoration: BoxDecoration(
+  //                     color: Colors.blue, // Màu sắc khi ngày được chọn
+  //                     shape: BoxShape.rectangle,
+  //                     borderRadius: BorderRadius.circular(5.0),
+  //                   ), // Ẩn các ngày ngoài phạm vi của tháng hiện tại
+  //                 ),
+  //                 calendarFormat: _calendarFormat,
+  //                 availableCalendarFormats: {
+  //                   CalendarFormat.week:
+  //                       'Tuần', // Chỉ có định dạng "Week" (1 tuần)
+  //                   CalendarFormat.month: 'Tháng', // Định dạng "Month" (tháng)
+  //                 },
+  //                 onDaySelected: (selectedDay, focusedDay) {
+  //                   setState(() {
+  //                     _selectFormDate = selectedDay;
+  //                   });
+  //                   Navigator.pop(context); // Đóng popup sau khi chọn ngày
+  //                   // Thêm bất kỳ xử lý nào bạn muốn sau khi chọn ngày ở đây
+  //                 },
+  //                 selectedDayPredicate: (day) {
+  //                   return isSameDay(_selectFormDate, day);
+  //                 },
+  //               ),
+  //             ),
+  //           ),
+  //     );
+  //   }
+  //
+  //   void _showCalendarToDatePopup(BuildContext context) {
+  //     showDialog(
+  //       context: context,
+  //       builder:
+  //           (context) => AlertDialog(
+  //             content: Container(
+  //               width: MediaQuery.of(context).size.width * 1.5,
+  //               height: MediaQuery.of(context).size.height * 0.6,
+  //               child: TableCalendar(
+  //                 rowHeight: 32,
+  //                 locale: "vi_VN",
+  //                 focusedDay: _selectToDate,
+  //                 firstDay: DateTime.utc(2010, 10, 16),
+  //                 lastDay: DateTime.utc(2030, 3, 14),
+  //                 calendarFormat: _calendarFormat,
+  //                 calendarStyle: CalendarStyle(
+  //                   selectedDecoration: BoxDecoration(
+  //                     color: Colors.blue, // Màu sắc khi ngày được chọn
+  //                     shape: BoxShape.rectangle,
+  //                     borderRadius: BorderRadius.circular(5.0),
+  //                   ), // Ẩn các ngày ngoài phạm vi của tháng hiện tại
+  //                 ),
+  //                 headerStyle: HeaderStyle(
+  //                   formatButtonVisible: false, // Ẩn nút chuyển đổi định dạng
+  //                   titleTextStyle: TextStyle(
+  //                     color: Colors.white,
+  //                   ), // Màu chữ của tiêu đề
+  //                   decoration: BoxDecoration(
+  //                     color: Colors.blue, // Màu nền của header
+  //                   ),
+  //                 ),
+  //                 availableCalendarFormats: {
+  //                   CalendarFormat.week:
+  //                       'Tuần', // Chỉ có định dạng "Week" (1 tuần)
+  //                   CalendarFormat.month: 'Tháng', // Định dạng "Month" (tháng)
+  //                 },
+  //                 onFormatChanged: (format) {
+  //                   setState(() {
+  //                     _calendarFormat = format;
+  //                   });
+  //                 },
+  //                 onDaySelected: (selectedDay, focusedDay) {
+  //                   setState(() {
+  //                     _selectToDate = selectedDay;
+  //                   });
+  //                   Navigator.pop(context); // Đóng popup sau khi chọn ngày
+  //                   // Thêm bất kỳ xử lý nào bạn muốn sau khi chọn ngày ở đây
+  //                 },
+  //                 selectedDayPredicate: (day) {
+  //                   return isSameDay(_selectToDate, day);
+  //                 },
+  //               ),
+  //             ),
+  //           ),
+  //     );
+  //   }
 }

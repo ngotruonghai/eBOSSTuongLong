@@ -1,6 +1,7 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:eboss_tuonglong/common/LanguageText.dart';
 import 'package:eboss_tuonglong/component/phieugiaohang/NhapYKien_srceen.dart';
+import 'package:eboss_tuonglong/helper/calendar/calendar_picker.dart';
 import 'package:eboss_tuonglong/provider/tiendoxulymauprovider.dart';
 import 'package:eboss_tuonglong/widgets/thongke/chitiettiendoxulymau_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,13 +13,10 @@ class ThongKeTheoDoiXuLyMauSrceen extends StatefulWidget {
   const ThongKeTheoDoiXuLyMauSrceen({super.key});
 
   @override
-  State<ThongKeTheoDoiXuLyMauSrceen> createState() =>
-      _ThongKeTheoDoiXuLyMauSrceen();
+  State<ThongKeTheoDoiXuLyMauSrceen> createState() => _ThongKeTheoDoiXuLyMauSrceen();
 }
 
-class _ThongKeTheoDoiXuLyMauSrceen
-    extends State<ThongKeTheoDoiXuLyMauSrceen>
-    with SingleTickerProviderStateMixin {
+class _ThongKeTheoDoiXuLyMauSrceen extends State<ThongKeTheoDoiXuLyMauSrceen> with SingleTickerProviderStateMixin {
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
   DateTime _selectFormDate = DateTime.now();
   DateTime _selectToDate = DateTime.now();
@@ -26,7 +24,6 @@ class _ThongKeTheoDoiXuLyMauSrceen
   final TextEditingController _productID = TextEditingController();
   final TextEditingController _customerAID = TextEditingController();
   final TextEditingController _salesManAID = TextEditingController();
-  CalendarFormat _calendarFormat = CalendarFormat.month;
 
   @override
   void initState() {
@@ -45,75 +42,65 @@ class _ThongKeTheoDoiXuLyMauSrceen
     return ChangeNotifierProvider(
       create: (_) {
         final provider = TienDoXuLyMauProvider();
-        provider.LoadDanhSachTienDoXuLyMau(context, 
+        provider.LoadDanhSachTienDoXuLyMau(
+          context,
           _dateFormat.format(_selectFormDate),
-          _dateFormat.format(_selectToDate), 
-          '', '', '', '');
+          _dateFormat.format(_selectToDate),
+          '',
+          '',
+          '',
+          '',
+        );
         return provider;
       },
       builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
-            title: LanguageText(
-              nameId: "tiendoxulymau",
-              defaultValue: "Tiến độ xử lý mẫu",
-            ),
+            title: LanguageText(nameId: "tiendoxulymau", defaultValue: "Tiến độ xử lý mẫu"),
             backgroundColor: const Color(0xFF225F59),
           ),
           body: Consumer<TienDoXuLyMauProvider>(
-            builder: (context, tiendoxulymauprovider, _)  {
+            builder: (context, tiendoxulymauprovider, _) {
               if (tiendoxulymauprovider.isLoading) {
                 return const Center(child: CircularProgressIndicator());
               }
               if (tiendoxulymauprovider.items.isEmpty) {
                 return const Center(
-                  child: Text(
-                    "Không có dữ liệu",
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
-                  ),
+                  child: Text("Không có dữ liệu", style: TextStyle(fontSize: 18, color: Colors.grey)),
                 );
               }
               return RefreshIndicator(
-                 onRefresh:
-                    () =>
-                        tiendoxulymauprovider.LoadDanhSachTienDoXuLyMau(
-                          context,
-                          _dateFormat.format(_selectFormDate),
-                          _dateFormat.format(_selectToDate),
-                          "",
-                          "","", ""
-                        ),
+                onRefresh:
+                    () => tiendoxulymauprovider.LoadDanhSachTienDoXuLyMau(
+                      context,
+                      _dateFormat.format(_selectFormDate),
+                      _dateFormat.format(_selectToDate),
+                      "",
+                      "",
+                      "",
+                      "",
+                    ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Padding(padding: const EdgeInsets.only(bottom: 24),
-                  child:  SizedBox(
-                     width: 1800,
-                     child: DataTable2(
-                        showCheckboxColumn:
-                            false, // Thêm dòng này để ẩn checkbox
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 24),
+                    child: SizedBox(
+                      width: 1800,
+                      child: DataTable2(
+                        showCheckboxColumn: false,
+                        // Thêm dòng này để ẩn checkbox
                         fixedTopRows: 1,
-                        headingRowColor: MaterialStateProperty.all(
-                          const Color(0xFF225F59),
-                        ),
+                        headingRowColor: WidgetStateProperty.all(const Color(0xFF225F59)),
                         columnSpacing: 8,
                         horizontalMargin: 8,
-                        headingTextStyle: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        headingTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                         columns: [
                           DataColumn2(
-                            label: Center(
-                              child: Text('${tiendoxulymauprovider.items.length}'),
-                            ),                            
-                            fixedWidth:
-                                50, // hoặc ColumnSize.S nếu muốn dùng size mặc định
+                            label: Center(child: Text('${tiendoxulymauprovider.items.length}')),
+                            fixedWidth: 50, // hoặc ColumnSize.S nếu muốn dùng size mặc định
                           ),
                           const DataColumn2(
-                            label: LanguageText(
-                              nameId: "VoucherID",
-                              defaultValue: "Số phiếu",
-                            ),
+                            label: LanguageText(nameId: "VoucherID", defaultValue: "Số phiếu"),
                             size: ColumnSize.L,
                           ),
                           const DataColumn2(
@@ -124,7 +111,7 @@ class _ThongKeTheoDoiXuLyMauSrceen
                             label: LanguageText(nameId: "masanpham", defaultValue: "Mã sản phẩm"),
                             size: ColumnSize.L,
                           ),
-                           const DataColumn2(
+                          const DataColumn2(
                             label: LanguageText(nameId: "HangerUnitID", defaultValue: "ĐVT Hanger"),
                             size: ColumnSize.S,
                           ),
@@ -136,11 +123,11 @@ class _ThongKeTheoDoiXuLyMauSrceen
                             label: LanguageText(nameId: "TrousersUnitID", defaultValue: "ĐVT Quần"),
                             size: ColumnSize.S,
                           ),
-                           const DataColumn2(
+                          const DataColumn2(
                             label: LanguageText(nameId: "TrousersQty", defaultValue: "SL Quần"),
                             size: ColumnSize.S,
                           ),
-                           const DataColumn2(
+                          const DataColumn2(
                             label: LanguageText(nameId: "ShirtUnitID", defaultValue: "ĐVT Áo"),
                             size: ColumnSize.S,
                           ),
@@ -160,13 +147,7 @@ class _ThongKeTheoDoiXuLyMauSrceen
                             label: LanguageText(nameId: "CommentsProduct", defaultValue: "Ý kiến đánh giá"),
                             fixedWidth: 200,
                           ),
-                          const DataColumn2(
-                            label: LanguageText(
-                              nameId: "",
-                              defaultValue: "...",
-                            ),
-                            size: ColumnSize.S,
-                          ),
+                          const DataColumn2(label: LanguageText(nameId: "", defaultValue: "..."), size: ColumnSize.S),
                           const DataColumn2(
                             label: LanguageText(nameId: "SewingDate", defaultValue: "Ngày may"),
                             size: ColumnSize.L,
@@ -203,11 +184,7 @@ class _ThongKeTheoDoiXuLyMauSrceen
                                     MaterialPageRoute(
                                       builder:
                                           (context) =>
-                                              ChiTietTienDoXuLyMauScreen(
-                                                processAID:
-                                                    item.processAID ?? '',
-                                                id: "",
-                                              ),
+                                              ChiTietTienDoXuLyMauScreen(processAID: item.processAID ?? '', id: ""),
                                     ),
                                   );
                                 },
@@ -218,9 +195,7 @@ class _ThongKeTheoDoiXuLyMauSrceen
                                       item.processID ?? '',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                        ),
+                                        color: getColorByStatus(item.isColorRed),
                                       ),
                                     ),
                                   ),
@@ -228,103 +203,60 @@ class _ThongKeTheoDoiXuLyMauSrceen
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        item.recordDate.toString().trim() ?? '',
-                                        style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
+                                        item.recordDate.toString().trim(),
+                                        style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                       ),
                                     ),
                                   ),
                                   DataCell(
                                     Text(
-                                      item.productID??"".toString().trim() ?? '',
-                                        style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
+                                      item.productID ?? "".toString().trim(),
+                                      style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                     ),
                                   ),
                                   DataCell(
                                     Text(
                                       item.unitName ?? '',
-                                        style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
+                                      style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                     ),
                                   ),
                                   DataCell(
-                                    Text(
-                                      item.qty ?? '',
-                                     style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
-                                    ),
+                                    Text(item.qty ?? '', style: TextStyle(color: getColorByStatus(item.isColorRed))),
                                   ),
-                                   DataCell(
+                                  DataCell(
                                     Text(
                                       item.trouserUnitName ?? '',
-                                      style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
+                                      style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                     ),
                                   ),
                                   DataCell(
                                     Text(
                                       item.trousersQty ?? '',
-                                      style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
+                                      style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                     ),
                                   ),
                                   DataCell(
                                     Text(
                                       item.shirtUnitName ?? '',
-                                      style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
+                                      style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                     ),
                                   ),
                                   DataCell(
                                     Text(
                                       item.shirtQty ?? '',
-                                      style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
+                                      style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                     ),
                                   ),
                                   DataCell(
                                     Text(
                                       item.customerName ?? '',
-                                      style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
+                                      style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                     ),
                                   ),
                                   DataCell(
                                     Text(
                                       item.salesManName ?? '',
-                                      style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
+                                      style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                     ),
                                   ),
                                   DataCell(
@@ -336,29 +268,22 @@ class _ThongKeTheoDoiXuLyMauSrceen
                                               (context) => AlertDialog(
                                                 title: const LanguageText(
                                                   nameId: "CommentsProduct",
-                                                  defaultValue:
-                                                      "Ý kiến đánh giá",
+                                                  defaultValue: "Ý kiến đánh giá",
                                                 ),
                                                 content: SingleChildScrollView(
                                                   child: Text(
-                                                    item.commentsProduct
-                                                            ?.toString() ??
-                                                        '',
-                                                        style: TextStyle(
-                                                    color: getColorByStatus(
-                                                      item.isColorRed,
-                                                      ),
-                                                    ),
+                                                    item.commentsProduct?.toString() ?? '',
+                                                    style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                                   ),
                                                 ),
                                                 actions: [
                                                   TextButton(
-                                                    onPressed:
-                                                        () => Navigator.pop(
-                                                          context,
-                                                        ),
-                                                    child: LanguageText(nameId: "dong", defaultValue: "Đóng",
-                                                    style: TextStyle(fontSize: 13, color: Colors.black),),
+                                                    onPressed: () => Navigator.pop(context),
+                                                    child: LanguageText(
+                                                      nameId: "dong",
+                                                      defaultValue: "Đóng",
+                                                      style: TextStyle(fontSize: 13, color: Colors.black),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -369,16 +294,9 @@ class _ThongKeTheoDoiXuLyMauSrceen
                                         child: Text(
                                           item.commentsProduct?.toString() ?? '',
                                           // <<< SỬA Ở ĐÂY
-                                          style: TextStyle(
-                                            color: getColorByStatus(
-                                              item.isColorRed,
-                                            ),
-                                          ),
-                                          maxLines:
-                                              2, // Chỉ hiển thị tối đa 2 dòng
-                                          overflow:
-                                              TextOverflow
-                                                  .ellipsis,
+                                          style: TextStyle(color: getColorByStatus(item.isColorRed)),
+                                          maxLines: 2, // Chỉ hiển thị tối đa 2 dòng
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ),
@@ -391,19 +309,15 @@ class _ThongKeTheoDoiXuLyMauSrceen
                                           context: context,
                                           builder:
                                               (context) => NhapykienSrceen(
-                                                ItemAID:
-                                                    "${currentItem.processAID}",
-                                                ItemID:
-                                                    "${currentItem.processID}",
+                                                ItemAID: "${currentItem.processAID}",
+                                                ItemID: "${currentItem.processID}",
                                                 Type: "04",
                                               ),
                                         );
                                       },
                                       child: Icon(
                                         Icons.edit_note_outlined,
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                        ),
+                                        color: getColorByStatus(item.isColorRed),
                                         size: 30,
                                       ),
                                     ),
@@ -411,49 +325,34 @@ class _ThongKeTheoDoiXuLyMauSrceen
                                   DataCell(
                                     Text(
                                       item.sewingDate ?? '',
-                                      style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
+                                      style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                     ),
                                   ),
                                   DataCell(
                                     Text(
                                       item.factoryWashDate ?? '',
-                                      style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
+                                      style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                     ),
                                   ),
                                   DataCell(
                                     Text(
                                       item.smartLabDate ?? '',
-                                      style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
+                                      style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                     ),
                                   ),
                                   DataCell(
                                     Text(
                                       item.sampleInnerInDate ?? '',
-                                      style: TextStyle(
-                                        color: getColorByStatus(
-                                          item.isColorRed,
-                                          ),
-                                        ),
+                                      style: TextStyle(color: getColorByStatus(item.isColorRed)),
                                     ),
                                   ),
                                 ],
                               );
                             }).toList(),
                       ),
-                  )),
-                )
+                    ),
+                  ),
+                ),
               );
             },
           ),
@@ -465,38 +364,29 @@ class _ThongKeTheoDoiXuLyMauSrceen
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     LanguageText(
-                nameId: "VoucherID",
-                defaultValue: "Số phiếu",
-                style: const TextStyle(fontSize: 13, color: Colors.black),
-              ),
-                    TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
-                      controller: _processID,
+                      nameId: "VoucherID",
+                      defaultValue: "Số phiếu",
+                      style: const TextStyle(fontSize: 13, color: Colors.black),
                     ),
+                    SizedBox(height: 4),
+                    TextField(decoration: const InputDecoration(border: OutlineInputBorder()), controller: _processID),
                     SizedBox(height: 20),
-                    const  LanguageText(
-                nameId: "masanpham",
-                defaultValue: "Mã sản phẩm",
-                style: const TextStyle(fontSize: 13, color: Colors.black),
-              ),
-                    TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
-                      controller: _productID,
+                    const LanguageText(
+                      nameId: "masanpham",
+                      defaultValue: "Mã sản phẩm",
+                      style: const TextStyle(fontSize: 13, color: Colors.black),
                     ),
+                    SizedBox(height: 4),
+                    TextField(decoration: const InputDecoration(border: OutlineInputBorder()), controller: _productID),
                     SizedBox(height: 20),
                     const LanguageText(
                       nameId: "tenkhachhang",
                       defaultValue: "Tên khách hàng",
                       style: TextStyle(fontSize: 13, color: Colors.black),
                     ),
+                    SizedBox(height: 4),
                     TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
+                      decoration: const InputDecoration(border: OutlineInputBorder()),
                       controller: _customerAID,
                     ),
                     SizedBox(height: 20),
@@ -505,11 +395,10 @@ class _ThongKeTheoDoiXuLyMauSrceen
                       defaultValue: "Nhân viên kinh doanh",
                       style: TextStyle(fontSize: 13, color: Colors.black),
                     ),
+                    SizedBox(height: 4),
                     TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
-                      controller: _customerAID,
+                      decoration: const InputDecoration(border: OutlineInputBorder()),
+                      controller: _salesManAID,
                     ),
                     const SizedBox(height: 20),
                     const LanguageText(
@@ -517,6 +406,7 @@ class _ThongKeTheoDoiXuLyMauSrceen
                       defaultValue: "Từ ngày",
                       style: TextStyle(fontSize: 13, color: Colors.black),
                     ),
+                    SizedBox(height: 4),
                     InkWell(
                       onTap: () {
                         _showCalendarFormDatePopup(context);
@@ -526,11 +416,7 @@ class _ThongKeTheoDoiXuLyMauSrceen
                           border: OutlineInputBorder(),
                           suffixIcon: Icon(Icons.calendar_today),
                         ),
-                        child: Text(
-                          _selectFormDate != null
-                              ? _dateFormat.format(_selectFormDate!)
-                              : "Chọn ngày",
-                        ),
+                        child: Text(_dateFormat.format(_selectFormDate)),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -539,43 +425,38 @@ class _ThongKeTheoDoiXuLyMauSrceen
                       defaultValue: "Đến ngày",
                       style: TextStyle(fontSize: 13, color: Colors.black),
                     ),
+                    SizedBox(height: 4),
                     InkWell(
                       onTap: () {
-                        _showCalendarToDatePopup(context);
+                        _showCalendarFormDatePopup(context, isToDate: true);
                       },
                       child: InputDecorator(
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           suffixIcon: Icon(Icons.calendar_today),
                         ),
-                        child: Text(
-                          _selectToDate != null
-                              ? _dateFormat.format(_selectToDate!)
-                              : "Chọn ngày",
-                        ),
+                        child: Text(_dateFormat.format(_selectToDate)),
                       ),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        context
-                            .read<TienDoXuLyMauProvider>()
-                            .LoadDanhSachTienDoXuLyMau(
-                              context,
-                              _dateFormat.format(_selectFormDate),
-                              _dateFormat.format(_selectToDate),
-                              _processID.text,
-                              _productID.text,
-                              _productID.text,
-                              _salesManAID.text,
-                            );
+                        context.read<TienDoXuLyMauProvider>().LoadDanhSachTienDoXuLyMau(
+                          context,
+                          _dateFormat.format(_selectFormDate),
+                          _dateFormat.format(_selectToDate),
+                          _processID.text,
+                          _productID.text,
+                          _productID.text,
+                          _salesManAID.text,
+                        );
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF1F615C),
                         foregroundColor: Colors.white,
                       ),
-                      child: LanguageText(defaultValue: "Tìm kiếm", nameId: "32",),
+                      child: LanguageText(defaultValue: "Tìm kiếm", nameId: "32"),
                     ),
                   ],
                 ),
@@ -583,113 +464,33 @@ class _ThongKeTheoDoiXuLyMauSrceen
             ),
           ),
         );
-      },      
-    );
-  }
-void _showCalendarFormDatePopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            content: Container(
-              width: MediaQuery.of(context).size.width * 1,
-              height: MediaQuery.of(context).size.height * 0.6,
-              child: TableCalendar(
-                focusedDay: _selectFormDate,
-                rowHeight: 32,
-                locale: "vi_VN",
-                //headerVisible: false,
-                //headerVisible: false,
-                headerStyle: HeaderStyle(
-                  formatButtonVisible: false, // Ẩn nút chuyển đổi định dạng
-                  titleTextStyle: TextStyle(
-                    color: Colors.white,
-                  ), // Màu chữ của tiêu đề
-                  decoration: BoxDecoration(
-                    color: Colors.blue, // Màu nền của header
-                  ),
-                ),
-                firstDay: DateTime.utc(2010, 10, 16),
-                lastDay: DateTime.utc(2030, 3, 14),
-                calendarStyle: CalendarStyle(
-                  selectedDecoration: BoxDecoration(
-                    color: Colors.blue, // Màu sắc khi ngày được chọn
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(5.0),
-                  ), // Ẩn các ngày ngoài phạm vi của tháng hiện tại
-                ),
-                calendarFormat: _calendarFormat,
-                availableCalendarFormats: {
-                  CalendarFormat.week:
-                      'Tuần', // Chỉ có định dạng "Week" (1 tuần)
-                  CalendarFormat.month: 'Tháng', // Định dạng "Month" (tháng)
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _selectFormDate = selectedDay;
-                  });
-                  Navigator.pop(context); // Đóng popup sau khi chọn ngày
-                  // Thêm bất kỳ xử lý nào bạn muốn sau khi chọn ngày ở đây
-                },
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectFormDate, day);
-                },
-              ),
-            ),
-          ),
+      },
     );
   }
 
-  void _showCalendarToDatePopup(BuildContext context) {
+  void _onDaySelect({required DateTime selectedDay, required DateTime focusedDay, bool isToDay = false}) {
+    setState(() {
+      isToDay == false ? _selectFormDate = selectedDay : _selectToDate = selectedDay;
+    });
+    Navigator.pop(context);
+  }
+
+  void _showCalendarFormDatePopup(BuildContext context, {bool isToDate = false}) {
+    DateTime firstDate = DateTime.utc(2010, 10, 16);
+    DateTime lastTime = DateTime.utc(2030, 3, 14);
     showDialog(
       context: context,
       builder:
           (context) => AlertDialog(
-            content: Container(
+            content: SizedBox(
               width: MediaQuery.of(context).size.width * 1.5,
               height: MediaQuery.of(context).size.height * 0.6,
-              child: TableCalendar(
-                rowHeight: 32,
-                locale: "vi_VN",
-                focusedDay: _selectToDate,
-                firstDay: DateTime.utc(2010, 10, 16),
-                lastDay: DateTime.utc(2030, 3, 14),
-                calendarFormat: _calendarFormat,
-                calendarStyle: CalendarStyle(
-                  selectedDecoration: BoxDecoration(
-                    color: Colors.blue, // Màu sắc khi ngày được chọn
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(5.0),
-                  ), // Ẩn các ngày ngoài phạm vi của tháng hiện tại
-                ),
-                headerStyle: HeaderStyle(
-                  formatButtonVisible: false, // Ẩn nút chuyển đổi định dạng
-                  titleTextStyle: TextStyle(
-                    color: Colors.white,
-                  ), // Màu chữ của tiêu đề
-                  decoration: BoxDecoration(
-                    color: Colors.blue, // Màu nền của header
-                  ),
-                ),
-                availableCalendarFormats: {
-                  CalendarFormat.week:
-                      'Tuần', // Chỉ có định dạng "Week" (1 tuần)
-                  CalendarFormat.month: 'Tháng', // Định dạng "Month" (tháng)
-                },
-                onFormatChanged: (format) {
-                  setState(() {
-                    _calendarFormat = format;
-                  });
-                },
+              child: CalendarPicker(
+                firstDay: firstDate,
+                lastDay: lastTime,
+                focusedDay: isToDate ? _selectToDate : _selectFormDate,
                 onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _selectToDate = selectedDay;
-                  });
-                  Navigator.pop(context); // Đóng popup sau khi chọn ngày
-                  // Thêm bất kỳ xử lý nào bạn muốn sau khi chọn ngày ở đây
-                },
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectToDate, day);
+                  _onDaySelect(selectedDay: selectedDay, focusedDay: focusedDay, isToDay: isToDate);
                 },
               ),
             ),

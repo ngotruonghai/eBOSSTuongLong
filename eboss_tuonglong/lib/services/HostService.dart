@@ -8,7 +8,7 @@ class HostService{
 }
 class MobileVersion{
   static String get VersionApp{
-    return "1.1.4";
+    return "1.1.5";
   }
 }
 
